@@ -8,6 +8,8 @@
 
 /* Begin PBXBuildFile section */
 		15838EF6F2C69A0D987FDF2D /* Pods_Stocks.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E37BC268962A507B6BCA4A4D /* Pods_Stocks.framework */; };
+		3A052B2125E3F58500446486 /* StockCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A052B2025E3F58500446486 /* StockCell.swift */; };
+		3A57741625E3E80000B67F4D /* StocksListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A57741525E3E80000B67F4D /* StocksListViewController.swift */; };
 		3A62138B25E26E0C00F4CBAE /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A62138A25E26E0C00F4CBAE /* AppDelegate.swift */; };
 		3A62139525E26E0C00F4CBAE /* Stocks.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 3A62139325E26E0C00F4CBAE /* Stocks.xcdatamodeld */; };
 		3A62139725E26E0D00F4CBAE /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 3A62139625E26E0D00F4CBAE /* Assets.xcassets */; };
@@ -27,6 +29,8 @@
 
 /* Begin PBXFileReference section */
 		0DB034069692151DB8C21DC6 /* Pods-Stocks.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Stocks.release.xcconfig"; path = "Target Support Files/Pods-Stocks/Pods-Stocks.release.xcconfig"; sourceTree = "<group>"; };
+		3A052B2025E3F58500446486 /* StockCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StockCell.swift; sourceTree = "<group>"; };
+		3A57741525E3E80000B67F4D /* StocksListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = StocksListViewController.swift; path = Stocks/UI/StocksListViewController.swift; sourceTree = SOURCE_ROOT; };
 		3A62138725E26E0C00F4CBAE /* Stocks.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Stocks.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		3A62138A25E26E0C00F4CBAE /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = AppDelegate.swift; path = ../AppDelegate.swift; sourceTree = "<group>"; };
 		3A62139425E26E0C00F4CBAE /* Stocks.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = Stocks.xcdatamodel; sourceTree = "<group>"; };
@@ -67,6 +71,23 @@
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
+		3A052B1E25E3F13800446486 /* StocksList */ = {
+			isa = PBXGroup;
+			children = (
+				3A052B1F25E3F57A00446486 /* Cell */,
+				3A57741525E3E80000B67F4D /* StocksListViewController.swift */,
+			);
+			path = StocksList;
+			sourceTree = "<group>";
+		};
+		3A052B1F25E3F57A00446486 /* Cell */ = {
+			isa = PBXGroup;
+			children = (
+				3A052B2025E3F58500446486 /* StockCell.swift */,
+			);
+			path = Cell;
+			sourceTree = "<group>";
+		};
 		3A57741225E3D1C800B67F4D /* AppRoot */ = {
 			isa = PBXGroup;
 			children = (
@@ -78,6 +99,7 @@
 		3A57741325E3E39B00B67F4D /* UI */ = {
 			isa = PBXGroup;
 			children = (
+				3A052B1E25E3F13800446486 /* StocksList */,
 			);
 			path = UI;
 			sourceTree = "<group>";
@@ -96,7 +118,6 @@
 			isa = PBXGroup;
 			children = (
 				3A62138925E26E0C00F4CBAE /* Stocks */,
-				3A62139825E26E0D00F4CBAE /* LaunchScreen.storyboard */,
 				3A6213A325E26E0D00F4CBAE /* StocksTests */,
 				3A62138825E26E0C00F4CBAE /* Products */,
 				784E9B32165BD42661388E3D /* Pods */,
@@ -116,6 +137,7 @@
 		3A62138925E26E0C00F4CBAE /* Stocks */ = {
 			isa = PBXGroup;
 			children = (
+				3A62139825E26E0D00F4CBAE /* LaunchScreen.storyboard */,
 				3A57741225E3D1C800B67F4D /* AppRoot */,
 				3A57741425E3E3B000B67F4D /* Resources */,
 				3A57741325E3E39B00B67F4D /* UI */,
@@ -153,6 +175,7 @@
 				3A62138425E26E0C00F4CBAE /* Frameworks */,
 				3A62138525E26E0C00F4CBAE /* Resources */,
 				1C8030ADC5307ADB527EABA5 /* [CP] Embed Pods Frameworks */,
+				3A57741725E3EE1800B67F4D /* ShellScript */,
 			);
 			buildRules = (
 			);
@@ -256,6 +279,23 @@
 			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-Stocks/Pods-Stocks-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
+		3A57741725E3EE1800B67F4D /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+			);
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "if which swiftlint >/dev/null; then\n  swiftlint\nelse\n  echo \"warning: SwiftLint not installed\"\nfi\n";
+		};
 		822B403492901F03667C77B9 /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -285,7 +325,9 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				3A57741625E3E80000B67F4D /* StocksListViewController.swift in Sources */,
 				3A62138B25E26E0C00F4CBAE /* AppDelegate.swift in Sources */,
+				3A052B2125E3F58500446486 /* StockCell.swift in Sources */,
 				3A62139525E26E0C00F4CBAE /* Stocks.xcdatamodeld in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
