@@ -15,6 +15,7 @@
 		3A62139725E26E0D00F4CBAE /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 3A62139625E26E0D00F4CBAE /* Assets.xcassets */; };
 		3A62139A25E26E0D00F4CBAE /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 3A62139825E26E0D00F4CBAE /* LaunchScreen.storyboard */; };
 		3A6213A525E26E0D00F4CBAE /* StocksTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A6213A425E26E0D00F4CBAE /* StocksTests.swift */; };
+		3AE9066C25E7DE8E00B346D3 /* DowJonesIndexRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AE9066B25E7DE8E00B346D3 /* DowJonesIndexRequest.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -40,6 +41,7 @@
 		3A6213A025E26E0D00F4CBAE /* StocksTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = StocksTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		3A6213A425E26E0D00F4CBAE /* StocksTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StocksTests.swift; sourceTree = "<group>"; };
 		3A6213A625E26E0D00F4CBAE /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		3AE9066B25E7DE8E00B346D3 /* DowJonesIndexRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DowJonesIndexRequest.swift; sourceTree = "<group>"; };
 		CC9E57B34B0D66802A30CB14 /* Pods-Stocks.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Stocks.debug.xcconfig"; path = "Target Support Files/Pods-Stocks/Pods-Stocks.debug.xcconfig"; sourceTree = "<group>"; };
 		E37BC268962A507B6BCA4A4D /* Pods_Stocks.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Stocks.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
@@ -152,6 +154,14 @@
 				3A6213A625E26E0D00F4CBAE /* Info.plist */,
 			);
 			path = StocksTests;
+			sourceTree = "<group>";
+		};
+		3AE9066825E7DE5900B346D3 /* Concrete */ = {
+			isa = PBXGroup;
+			children = (
+				3AE9066B25E7DE8E00B346D3 /* DowJonesIndexRequest.swift */,
+			);
+			path = Concrete;
 			sourceTree = "<group>";
 		};
 		784E9B32165BD42661388E3D /* Pods */ = {
@@ -327,6 +337,7 @@
 			files = (
 				3A57741625E3E80000B67F4D /* StocksListViewController.swift in Sources */,
 				3A62138B25E26E0C00F4CBAE /* AppDelegate.swift in Sources */,
+				3AE9066C25E7DE8E00B346D3 /* DowJonesIndexRequest.swift in Sources */,
 				3A052B2125E3F58500446486 /* StockCell.swift in Sources */,
 				3A62139525E26E0C00F4CBAE /* Stocks.xcdatamodeld in Sources */,
 			);
