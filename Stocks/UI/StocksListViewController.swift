@@ -9,11 +9,16 @@
 import UIKit
 import SnapKit
 
-final class StocksListViewController: UIViewController {
+protocol IStocksListView: class {
+
+}
+
+final class StocksListViewController: UIViewController, IStocksListView {
 
     // MARK: - Properties
 
     let stockCellReuseId = String(describing: type(of: StockCell.self))
+    var presenter: IStocksListPresenter?
 
     // MARK: - UI
 
@@ -34,7 +39,8 @@ final class StocksListViewController: UIViewController {
         super.viewDidLoad()
 
         setupUI()
-        // TODO: - Add presenter
+
+        presenter?.viewDidLoad()
     }
 
 }
@@ -64,12 +70,23 @@ extension StocksListViewController: UITableViewDataSource {
         }
 
         cell.configureUI(with: StockCellViewModel(logoImage: nil,
+                                                  isFavourite: false,
                                                   isEmphasized: indexPath.row % 2 == 0, // TODO: - make more readable
                                                   displaySymbol: "YNDX",
                                                   description: "Yandex, LLC",
                                                   currentPrice: "$3 204",
                                                   dayPrice: "+$0.12 (1,15%)"))
         return cell
+    }
+
+    func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
+        guard let presenter = presenter else {
+            return
+        }
+
+        if indexPath.row == presenter.itemsCount() - 2 {
+            // TODO: load more stocks
+        }
     }
 
 }

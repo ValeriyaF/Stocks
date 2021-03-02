@@ -8,16 +8,6 @@
 
 import SnapKit
 
-struct StockCellViewModel {
-
-    var logoImage: UIImage? 
-    var isEmphasized: Bool
-    var displaySymbol: String
-    var description: String
-    var currentPrice: String
-    var dayPrice: String
-}
-
 final class StockCell: UITableViewCell {
 
     // MARK: - UI

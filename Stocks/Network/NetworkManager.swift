@@ -10,7 +10,8 @@ import Foundation
 
 protocol INetworkManager {
 
-    func loadRequest<Model: Decodable>(request: IRequest, completion: @escaping (Result<Model?, Error>) -> Void)
+    func loadRequest<Model: Decodable>(request: IRequest,
+                                       completion: @escaping (Result<Model?, Error>) -> Void)
 
 }
 
@@ -18,7 +19,8 @@ final class NetworkManager: INetworkManager {
 
     let session = URLSession.shared
 
-    func loadRequest<Model: Decodable>(request: IRequest, completion: @escaping (Result<Model, Error>) -> Void) {
+    func loadRequest<Model: Decodable>(request: IRequest,
+                                       completion: @escaping (Result<Model?, Error>) -> Void) {
         guard let urlRequest = request.urlRequest else {
             return // TODO: throws error
         }

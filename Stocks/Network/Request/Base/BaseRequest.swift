@@ -25,8 +25,8 @@ class BaseRequest: IRequest {
     var urlRequest: URLRequest? {
         var components = URLComponents()
         components.scheme = "https"
-        components.host = "finnhub.io/api/v1/"
-        components.path = path
+        components.host = "finnhub.io"
+        components.path = "/api/v1\(path)"
         components.queryItems = queryItems
 
         guard let url = components.url else {
