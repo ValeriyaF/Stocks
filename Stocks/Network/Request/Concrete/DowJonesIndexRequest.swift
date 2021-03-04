@@ -8,14 +8,14 @@
 
 import Foundation
 
-struct DowJonesIndexResponceData: Decodable {
+struct DowJonesIndexResponseData: Decodable {
 
     let constituents: [String]
 
     enum CodingKeys: String, CodingKey {
         case constituents
     }
-    
+
 }
 
 final class DowJonesIndexRequest: BaseRequest {

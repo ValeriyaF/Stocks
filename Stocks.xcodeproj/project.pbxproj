@@ -19,6 +19,8 @@
 		3AD9749725EBF4A600ADA762 /* StocksListPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AD9749625EBF4A600ADA762 /* StocksListPresenter.swift */; };
 		3AD9749925EE891200ADA762 /* StockCellViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AD9749825EE891200ADA762 /* StockCellViewModel.swift */; };
 		3AD9749B25EE893C00ADA762 /* StockDataModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AD9749A25EE893C00ADA762 /* StockDataModel.swift */; };
+		3AD9749D25EFDBEF00ADA762 /* StockProfileRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AD9749C25EFDBEF00ADA762 /* StockProfileRequest.swift */; };
+		3AD9749F25F1388600ADA762 /* StockQuoteRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AD9749E25F1388600ADA762 /* StockQuoteRequest.swift */; };
 		3AE9066225E7DDDF00B346D3 /* RequestMethod.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AE9066125E7DDDF00B346D3 /* RequestMethod.swift */; };
 		3AE9066425E7DE0600B346D3 /* IRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AE9066325E7DE0600B346D3 /* IRequest.swift */; };
 		3AE9066625E7DE1900B346D3 /* BaseRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AE9066525E7DE1900B346D3 /* BaseRequest.swift */; };
@@ -53,6 +55,8 @@
 		3AD9749625EBF4A600ADA762 /* StocksListPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StocksListPresenter.swift; sourceTree = "<group>"; };
 		3AD9749825EE891200ADA762 /* StockCellViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StockCellViewModel.swift; sourceTree = "<group>"; };
 		3AD9749A25EE893C00ADA762 /* StockDataModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StockDataModel.swift; sourceTree = "<group>"; };
+		3AD9749C25EFDBEF00ADA762 /* StockProfileRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StockProfileRequest.swift; sourceTree = "<group>"; };
+		3AD9749E25F1388600ADA762 /* StockQuoteRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StockQuoteRequest.swift; sourceTree = "<group>"; };
 		3AE9066125E7DDDF00B346D3 /* RequestMethod.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RequestMethod.swift; sourceTree = "<group>"; };
 		3AE9066325E7DE0600B346D3 /* IRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IRequest.swift; sourceTree = "<group>"; };
 		3AE9066525E7DE1900B346D3 /* BaseRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseRequest.swift; sourceTree = "<group>"; };
@@ -167,11 +171,11 @@
 		3A62138925E26E0C00F4CBAE /* Stocks */ = {
 			isa = PBXGroup;
 			children = (
-				3AE9066D25E7DF3400B346D3 /* Services */,
-				3A62139825E26E0D00F4CBAE /* LaunchScreen.storyboard */,
 				3A57741225E3D1C800B67F4D /* AppRoot */,
+				3A62139825E26E0D00F4CBAE /* LaunchScreen.storyboard */,
 				3A052B2225E5136D00446486 /* Network */,
 				3A57741425E3E3B000B67F4D /* Resources */,
+				3AE9066D25E7DF3400B346D3 /* Services */,
 				3A57741325E3E39B00B67F4D /* UI */,
 			);
 			path = Stocks;
@@ -209,6 +213,8 @@
 			isa = PBXGroup;
 			children = (
 				3AE9066B25E7DE8E00B346D3 /* DowJonesIndexRequest.swift */,
+				3AD9749C25EFDBEF00ADA762 /* StockProfileRequest.swift */,
+				3AD9749E25F1388600ADA762 /* StockQuoteRequest.swift */,
 			);
 			path = Concrete;
 			sourceTree = "<group>";
@@ -398,12 +404,14 @@
 				3AD9749925EE891200ADA762 /* StockCellViewModel.swift in Sources */,
 				3AE9066F25E7DF8A00B346D3 /* StocksInfoService.swift in Sources */,
 				3AE9066425E7DE0600B346D3 /* IRequest.swift in Sources */,
+				3AD9749F25F1388600ADA762 /* StockQuoteRequest.swift in Sources */,
 				3A62138B25E26E0C00F4CBAE /* AppDelegate.swift in Sources */,
 				3A052B2425E5153200446486 /* NetworkManager.swift in Sources */,
 				3AE9066C25E7DE8E00B346D3 /* DowJonesIndexRequest.swift in Sources */,
 				3A052B2125E3F58500446486 /* StockCell.swift in Sources */,
 				3AE9066225E7DDDF00B346D3 /* RequestMethod.swift in Sources */,
 				3A62139525E26E0C00F4CBAE /* Stocks.xcdatamodeld in Sources */,
+				3AD9749D25EFDBEF00ADA762 /* StockProfileRequest.swift in Sources */,
 				3AD9749B25EE893C00ADA762 /* StockDataModel.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
