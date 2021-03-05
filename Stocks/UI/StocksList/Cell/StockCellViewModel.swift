@@ -16,20 +16,20 @@ struct StockCellViewModel {
     var displaySymbol: String
     var description: String
     var currentPrice: String
-    var dayPrice: String
+    var dayDelta: String?
 
 }
 
 extension StockCellViewModel {
 
-    init(with dm: StockDataModel) {
-        logoImage = dm.logoImage
+    init(with dm: StockDataModel, isEmphasized: Bool) {
+//        logoImage = dm.logoImage
         isFavourite = dm.isFavourite
-        isEmphasized = dm.isEmphasized
         displaySymbol = dm.displaySymbol
-        description = dm.description
-        currentPrice = dm.currentPrice
-        dayPrice = dm.dayPrice
+        description = dm.description ?? ""
+        currentPrice = dm.currentPrice ?? ""
+        dayDelta = dm.dayDelta
+        self.isEmphasized = isEmphasized
     }
 
 }

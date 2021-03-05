@@ -11,6 +11,12 @@ import SnapKit
 
 protocol IStocksListView: class {
 
+    func updateStocks()
+
+    func showLoadingMoreIndicator()
+
+    func hideLoadingMoreIndicator()
+
 }
 
 final class StocksListViewController: UIViewController, IStocksListView {
@@ -33,6 +39,10 @@ final class StocksListViewController: UIViewController, IStocksListView {
         return tableView
     }()
 
+    private lazy var footerView: LoadMoreFooter = {
+        LoadMoreFooter()
+    }()
+
     // MARK: - Lifecycle
 
     override func viewDidLoad() {
@@ -41,6 +51,22 @@ final class StocksListViewController: UIViewController, IStocksListView {
         setupUI()
 
         presenter?.viewDidLoad()
+    }
+
+    // MARK: - IStocksListView
+
+    func updateStocks() {
+        tableView.reloadData()
+    }
+
+    func showLoadingMoreIndicator() {
+        footerView.isLoading = true
+        tableView.tableFooterView = footerView
+    }
+
+    func hideLoadingMoreIndicator() {
+        footerView.isLoading = false
+        tableView.tableFooterView = nil
     }
 
 }
@@ -61,31 +87,28 @@ extension StocksListViewController {
 extension StocksListViewController: UITableViewDataSource {
 
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return 10
+        return presenter?.itemsCount() ?? 0
     }
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        guard let cell = tableView.dequeueReusableCell(withIdentifier: stockCellReuseId) as? StockCell else {
+        guard let presenter = presenter,
+            let cell = tableView.dequeueReusableCell(withIdentifier: stockCellReuseId) as? StockCell else {
             fatalError("Unable to dequeue a cell with identifier \(stockCellReuseId)")
         }
 
-        cell.configureUI(with: StockCellViewModel(logoImage: nil,
-                                                  isFavourite: false,
-                                                  isEmphasized: indexPath.row % 2 == 0, // TODO: - make more readable
-                                                  displaySymbol: "YNDX",
-                                                  description: "Yandex, LLC",
-                                                  currentPrice: "$3 204",
-                                                  dayPrice: "+$0.12 (1,15%)"))
+        let stockDM = presenter.stockDataModel(index: indexPath.row)
+        let cellVM = StockCellViewModel(with: stockDM, isEmphasized: indexPath.row % 2 == 0)
+        cell.configureUI(with: cellVM)
         return cell
     }
 
     func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
-        guard let presenter = presenter else {
+        guard let presenter = presenter, !presenter.isLoading else {
             return
         }
 
-        if indexPath.row == presenter.itemsCount() - 2 {
-            // TODO: load more stocks
+        if (indexPath.row == presenter.itemsCount() - 1) && presenter.loadMoreEnable {
+            presenter.scrolledToTableBottom()
         }
     }
 

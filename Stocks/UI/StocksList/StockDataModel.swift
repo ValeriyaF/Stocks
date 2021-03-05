@@ -6,16 +6,28 @@
 //  Copyright © 2021 valeri. All rights reserved.
 //
 
-import UIKit
+import Foundation
 
 struct StockDataModel {
 
-    var isFavourite: Bool
-    var isEmphasized: Bool
-    var logoImage: UIImage?
+    var isFavourite: Bool = false
+    var logoImageURL: String?
     var displaySymbol: String
-    var description: String
-    var currentPrice: String
-    var dayPrice: String
+    var description: String?
+    var currentPrice: String?
+    var dayDelta: String?
+    var currency: CurrencyType?
+
+    var isCompleted: Bool {
+        description != nil && currentPrice != nil
+    }
+
+}
+
+extension StockDataModel {
+
+    init(displaySymbol: String) {
+        self.displaySymbol = displaySymbol
+    }
 
 }

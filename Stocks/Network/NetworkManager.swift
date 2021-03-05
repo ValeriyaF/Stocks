@@ -26,12 +26,17 @@ final class NetworkManager: INetworkManager {
         }
 
         session.dataTask(with: urlRequest) { data, _, error in
-            if let data = data,
-                let responce = try? JSONDecoder().decode(Model.self, from: data) {
-                completion(.success(responce))
-            } else if let error = error {
+            if let error = error {
                 completion(.failure(error))
             }
+
+            if let data = data,
+                let response = try? JSONDecoder().decode(Model.self, from: data) {
+                completion(.success(response))
+            } else {
+//                // TODO: completion(.failure(NetworkError.DecodableError))
+            }
+
         }.resume()
     }
 

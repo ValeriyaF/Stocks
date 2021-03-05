@@ -12,7 +12,15 @@ protocol IStocksListPresenter {
 
     func viewDidLoad()
 
+    func scrolledToTableBottom()
+
     func itemsCount() -> Int
+
+    func stockDataModel(index: Int) -> StockDataModel
+
+    var isLoading: Bool { get }
+
+    var loadMoreEnable: Bool { get }
 
 }
 
@@ -25,8 +33,8 @@ final class StocksListPresenter: IStocksListPresenter {
 
     // MARK: - Properties
 
+    var isLoading: Bool = false
     private var items = [StockDataModel]()
-
 
     // MARK: - Initialisation
 
@@ -43,13 +51,63 @@ final class StocksListPresenter: IStocksListPresenter {
 extension StocksListPresenter {
 
     func viewDidLoad() {
-        stocksInfoService.loadStocks(limit: 5) { res in
+        loadStocks(limit: 10)
+    }
 
+    func scrolledToTableBottom() {
+        isLoading = true
+        view?.showLoadingMoreIndicator()
+
+        stocksInfoService.loadMore(limit: 10) { [weak self] result in
+            switch result {
+            case .failure(let error):
+                // TODO: - add
+                break
+            case .success(let dm):
+                self?.items = dm
+                DispatchQueue.main.async {
+                    self?.view?.hideLoadingMoreIndicator()
+                    self?.view?.updateStocks()
+                    self?.isLoading = false
+                }
+            }
         }
     }
 
     func itemsCount() -> Int {
         items.count
+    }
+
+    func stockDataModel(index: Int) -> StockDataModel {
+        return items[index]
+    }
+
+    var loadMoreEnable: Bool {
+        !stocksInfoService.stocksInfoFilled
+    }
+
+}
+
+// MARK: - Private
+
+extension StocksListPresenter {
+
+    private func loadStocks(limit: Int) {
+        isLoading = true
+
+        stocksInfoService.loadStocks(limit: limit) { [weak self] result in
+            switch result {
+            case .failure(let error):
+                // TODO: - add
+                break
+            case .success(let dm):
+                self?.items = dm
+                DispatchQueue.main.async {
+                    self?.view?.updateStocks()
+                    self?.isLoading = false
+                }
+            }
+        }
     }
 
 }

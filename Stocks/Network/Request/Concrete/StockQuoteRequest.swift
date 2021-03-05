@@ -10,8 +10,8 @@ import Foundation
 
 struct StockQuoteResponseData: Decodable {
 
-    let dayOpenPrice: Double
-    let currentPrice: Double
+    let dayOpenPrice: Double?
+    let currentPrice: Double?
 
     enum CodingKeys: String, CodingKey {
         case dayOpenPrice = "o"

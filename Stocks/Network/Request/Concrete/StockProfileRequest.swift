@@ -16,7 +16,7 @@ enum CurrencyType: String, Decodable {
 
 struct StockProfileResponseData: Decodable {
 
-    let currency: CurrencyType
+    let currency: CurrencyType?
     let logoURL: String?
     let name: String?
 

@@ -52,7 +52,7 @@ final class StockCell: UITableViewCell {
         return label
     }()
 
-    private let dayPriceLabel: UILabel = {
+    private let dayDeltaLabel: UILabel = {
         let label = UILabel()
         label.font = UIFont(name: "Avenir-Medium", size: 12.0) // TODO: add consts
         label.textAlignment = .right
@@ -64,7 +64,7 @@ final class StockCell: UITableViewCell {
         let stackView = UIStackView()
         stackView.axis = .vertical
         stackView.addArrangedSubview(currentPriceLabel)
-        stackView.addArrangedSubview(dayPriceLabel)
+        stackView.addArrangedSubview(dayDeltaLabel)
         return stackView
     }()
 
@@ -87,7 +87,7 @@ final class StockCell: UITableViewCell {
         logoImage.image = viewModel.logoImage // TODO: https://medium.com/flawless-app-stories/reusable-image-cache-in-swift-9b90eb338e8d
         displaySymbolLabel.text = viewModel.displaySymbol
         descriptionLabel.text = viewModel.description
-        dayPriceLabel.text = viewModel.dayPrice
+        dayDeltaLabel.text = viewModel.dayDelta
         currentPriceLabel.text = viewModel.currentPrice
     }
 
