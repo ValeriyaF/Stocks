@@ -26,7 +26,6 @@ final class StockCell: UITableViewCell {
 
     private let favoriteImageView: UIImageView = {
         let imageView = UIImageView()
-        imageView.backgroundColor = .yellow
         return imageView
     }()
 
@@ -82,13 +81,15 @@ final class StockCell: UITableViewCell {
 
     func configureUI(with viewModel: StockCellViewModel) {
         roundedView.backgroundColor = viewModel.isEmphasized
-            ? UIColor(red: 240/255, green: 244/255, blue: 247/255, alpha: 1)
+            ? .init(rgb: 0xF0F4F7)
             : .white
         logoImage.image = viewModel.logoImage // TODO: https://medium.com/flawless-app-stories/reusable-image-cache-in-swift-9b90eb338e8d
         displaySymbolLabel.text = viewModel.displaySymbol
         descriptionLabel.text = viewModel.description
-        dayDeltaLabel.text = viewModel.dayDelta
         currentPriceLabel.text = viewModel.currentPrice
+        dayDeltaLabel.text = viewModel.dayDelta
+        dayDeltaLabel.textColor = viewModel.isNegativeDayDelta ? .init(rgb: 0xB22424) : .init(rgb: 0x24B25D)
+        favoriteImageView.image = viewModel.isFavourite ? UIImage(named: "yellowStar") : UIImage(named: "grayStar")
     }
 
 }
@@ -129,12 +130,13 @@ extension StockCell {
         descriptionLabel.snp.makeConstraints {
             $0.top.equalTo(displaySymbolLabel.snp.bottom)
             $0.leading.equalTo(displaySymbolLabel)
+            $0.width.equalTo(170)
         }
 
         roundedView.addSubview(favoriteImageView)
         favoriteImageView.snp.makeConstraints {
             $0.size.equalTo(16)
-            $0.top.equalToSuperview().offset(17)
+            $0.top.equalToSuperview().offset(15)
             $0.leading.equalTo(displaySymbolLabel.snp.trailing).offset(6)
         }
 

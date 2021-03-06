@@ -94,7 +94,7 @@ extension StocksInfoService {
                     // TODO: completion with error
                     break
                 case .success(let response):
-                    self?.stocks[i].description = response?.name
+                    self?.stocks[i].description = response?.name ?? ""
                     self?.stocks[i].logoImageURL = response?.logoURL
                     self?.stocks[i].currency  = response?.currency
                 }
@@ -110,10 +110,11 @@ extension StocksInfoService {
                     // TODO: completion with error
                     break
                 case .success(let response):
-                    self?.stocks[i].currentPrice = String(response?.currentPrice ?? 0)
+                    self?.stocks[i].currentPrice = response?.currentPrice ?? 0
                     if let currentPrice = response?.currentPrice,
                         let dayOpenPrice = response?.dayOpenPrice {
-                        self?.stocks[i].dayDelta = String(currentPrice - dayOpenPrice)
+                        self?.stocks[i].dayDelta = currentPrice - dayOpenPrice
+                        self?.stocks[i].dayDeltaPersent = 100 * (currentPrice - dayOpenPrice) / dayOpenPrice
                     }
                 }
                 dispatchGroup.leave()

@@ -14,8 +14,9 @@ struct StockDataModel {
     var logoImageURL: String?
     var displaySymbol: String
     var description: String?
-    var currentPrice: String?
-    var dayDelta: String?
+    var currentPrice: Double?
+    var dayDelta: Double?
+    var dayDeltaPersent: Double?
     var currency: CurrencyType?
 
     var isCompleted: Bool {

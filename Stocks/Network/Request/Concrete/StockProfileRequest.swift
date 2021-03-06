@@ -12,6 +12,13 @@ enum CurrencyType: String, Decodable {
 
     case USD
 
+    var symbol: String {
+        switch self {
+        case .USD:
+            return "$"
+        }
+    }
+    
 }
 
 struct StockProfileResponseData: Decodable {

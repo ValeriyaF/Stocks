@@ -17,6 +17,8 @@ struct StockCellViewModel {
     var description: String
     var currentPrice: String
     var dayDelta: String?
+    var isNegativeDayDelta: Bool
+    var currency: CurrencyType?
 
 }
 
@@ -25,11 +27,27 @@ extension StockCellViewModel {
     init(with dm: StockDataModel, isEmphasized: Bool) {
 //        logoImage = dm.logoImage
         isFavourite = dm.isFavourite
+        self.isEmphasized = isEmphasized
         displaySymbol = dm.displaySymbol
         description = dm.description ?? ""
-        currentPrice = dm.currentPrice ?? ""
-        dayDelta = dm.dayDelta
-        self.isEmphasized = isEmphasized
+
+        let currencySymbol = dm.currency?.symbol ?? ""
+        var currentPrice = currencySymbol
+        currentPrice += String(format: "%.2f", dm.currentPrice ?? 0)
+        self.currentPrice = currentPrice
+
+        isNegativeDayDelta = false
+        if let dayDelta = dm.dayDelta,
+            let dayDeltaPersent = dm.dayDeltaPersent {
+            let sign = dayDelta >= 0 ? "+" : "-"
+            isNegativeDayDelta = dayDelta < 0
+            self.dayDelta = String(format: "\(sign)\(currencySymbol)%.2f (%.2f%%)",
+                abs(dayDelta),
+                abs(dayDeltaPersent))
+        }
+
+        currency = dm.currency
+
     }
 
 }
