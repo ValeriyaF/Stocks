@@ -14,7 +14,7 @@ final class CoreDataManager {
     static let shared = CoreDataManager()
     private init() {}
 
-    lazy var persistentContainer: NSPersistentContainer = {
+    private lazy var persistentContainer: NSPersistentContainer = {
 
         let container = NSPersistentContainer(name: "Stocks")
 
@@ -40,10 +40,15 @@ final class CoreDataManager {
         }
     }
 
-    func save(completion: (NSManagedObjectContext) -> Void) throws {
+    func save(completion: (NSManagedObjectContext) -> Void) {
         let context = persistentContainer.viewContext
         completion(context)
-        try context.save()
+
+        do {
+            try context.save()
+        } catch {
+            assertionFailure() // TODO: add log msg
+        }
     }
 
     func fetch<Entity: NSManagedObject>(entity: Entity.Type) throws -> [Any] {

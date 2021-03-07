@@ -10,6 +10,12 @@ import SnapKit
 
 final class StockCell: UITableViewCell {
 
+    var viewModel: StockCellViewModel? {
+        didSet {
+            configureUI()
+        }
+    }
+
     // MARK: - UI
 
     private let roundedView: UIView = {
@@ -81,24 +87,6 @@ final class StockCell: UITableViewCell {
         setupUI()
     }
 
-    func configureUI(with viewModel: StockCellViewModel) {
-        if let logoImageString = viewModel.logoImageString {
-            logoImage.getImage(urlString: logoImageString)
-        } else {
-            logoImage.image = nil
-        }
-
-        roundedView.backgroundColor = viewModel.isEmphasized
-            ? .init(rgb: 0xF0F4F7)
-            : .white
-        displaySymbolLabel.text = viewModel.displaySymbol
-        descriptionLabel.text = viewModel.description
-        currentPriceLabel.text = viewModel.currentPrice
-        dayDeltaLabel.text = viewModel.dayDelta
-        dayDeltaLabel.textColor = viewModel.isNegativeDayDelta ? .init(rgb: 0xB22424) : .init(rgb: 0x24B25D)
-        favoriteImageView.image = viewModel.isFavourite ? UIImage(named: "yellowStar") : UIImage(named: "grayStar")
-    }
-
 }
 
 // MARK: - UI Managment
@@ -147,6 +135,10 @@ extension StockCell {
             $0.leading.equalTo(displaySymbolLabel.snp.trailing).offset(6)
         }
 
+        let tapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(favoriteImageViewTapped))
+        favoriteImageView.isUserInteractionEnabled = true
+        favoriteImageView.addGestureRecognizer(tapGestureRecognizer)
+
         roundedView.addSubview(priceStackView)
         priceStackView.snp.makeConstraints {
             $0.top.equalToSuperview().offset(12)
@@ -156,6 +148,45 @@ extension StockCell {
 
         layoutIfNeeded()
     }
+
+    private func configureUI() {
+        guard let viewModel = viewModel else { return }
+
+        if let logoImageString = viewModel.logoImageString {
+            logoImage.getImage(urlString: logoImageString)
+        } else {
+            logoImage.image = nil
+        }
+
+        roundedView.backgroundColor = viewModel.isEmphasized
+            ? .init(rgb: 0xF0F4F7)
+            : .white
+        displaySymbolLabel.text = viewModel.displaySymbol
+        descriptionLabel.text = viewModel.description
+        currentPriceLabel.text = viewModel.currentPrice
+        dayDeltaLabel.text = viewModel.dayDelta
+        dayDeltaLabel.textColor = viewModel.isNegativeDayDelta ? .init(rgb: 0xB22424) : .init(rgb: 0x24B25D)
+        favoriteImageView.image = viewModel.isFavourite ? Images.favorite : Images.unfavorite
+    }
+
+}
+
+// MARK: - Actions
+
+extension StockCell {
+
+    @IBAction func favoriteImageViewTapped() {
+        guard let viewModel = viewModel else { return }
+
+        viewModel.favouriteStateChanged()
+        favoriteImageView.image = viewModel.isFavourite ? Images.favorite : Images.unfavorite
+    }
+}
+
+private enum Images {
+
+    static let favorite: UIImage = UIImage(named: "yellowStar")!
+    static let unfavorite: UIImage = UIImage(named: "grayStar")!
 
 }
 

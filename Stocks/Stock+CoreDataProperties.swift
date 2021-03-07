@@ -16,7 +16,6 @@ extension Stock {
         return NSFetchRequest<Stock>(entityName: "Stock")
     }
 
-    @NSManaged public var isFavourite: Bool
     @NSManaged public var displaySymbol: String?
     @NSManaged public var nameDescription: String?
     @NSManaged public var currentPrice: NSNumber?

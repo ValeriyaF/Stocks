@@ -8,7 +8,9 @@
 
 import UIKit
 
-struct StockCellViewModel {
+final class StockCellViewModel {
+
+    // MARK: - Properties
 
     var logoImageString: String?
     var isFavourite: Bool
@@ -17,14 +19,14 @@ struct StockCellViewModel {
     var description: String
     var currentPrice: String
     var dayDelta: String?
-    var isNegativeDayDelta: Bool
+    var isNegativeDayDelta: Bool = false
     var currency: CurrencyType?
 
-}
+    var favouriteStateChangedCompletion: (String) -> Void
 
-extension StockCellViewModel {
+    // MARK: - Initialisation
 
-    init(with dm: StockDataModel, isEmphasized: Bool) {
+    init(with dm: StockDataModel, isEmphasized: Bool, favouriteStateChangedCompletion: @escaping (String) -> Void) {
         logoImageString = dm.logoImageString
         isFavourite = dm.isFavourite
         self.isEmphasized = isEmphasized
@@ -47,7 +49,16 @@ extension StockCellViewModel {
         }
 
         currency = dm.currency
+        self.favouriteStateChangedCompletion = favouriteStateChangedCompletion
+    }
+    
+}
 
+extension StockCellViewModel {
+
+    func favouriteStateChanged() {
+        isFavourite = !isFavourite
+        favouriteStateChangedCompletion(displaySymbol)
     }
 
 }

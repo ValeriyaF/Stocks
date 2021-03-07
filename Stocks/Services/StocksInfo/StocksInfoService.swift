@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import CoreData
 
 protocol IStocksInfoService {
 
@@ -15,6 +16,8 @@ protocol IStocksInfoService {
     func refreshStocks(limit: Int, completion: @escaping (Result<[StockDataModel], Error>) -> Void)
 
     func loadMore(limit: Int, completion: @escaping (Result<[StockDataModel], Error>) -> Void)
+
+    func updateFavoriteStatus(stockSymbol: String) -> [StockDataModel]
 
 }
 
@@ -25,6 +28,9 @@ final class StocksInfoService: IStocksInfoService {
     let networkManager: INetworkManager
 
     private let workingQueue = DispatchQueue(label: "stocks.workingQueue", qos: .userInitiated, attributes: .concurrent)
+
+    private var userFavorites = Set<String>()
+
     private var stocks = [StockDataModel]()
     private var lastCompletedCount: Int = 0
     private var completedStocks: [StockDataModel] {
@@ -44,6 +50,14 @@ final class StocksInfoService: IStocksInfoService {
     }
 
     func refreshStocks(limit: Int, completion: @escaping (Result<[StockDataModel], Error>) -> Void) {
+        if let userData = try? (CoreDataManager.shared.fetch(entity: UserData.self) as? [UserData])?.first {
+            userFavorites = Set(userData.favouriteStocks)
+        } else {
+            CoreDataManager.shared.save { context in
+                let entity = UserData(context: context)
+                entity.setValue([], forKey: (\UserData.favouriteStocks).stringValue)
+            }
+        }
 
         let djRequest = DowJonesIndexRequest()
         networkManager.loadRequest(request: djRequest) { [weak self] (result: Result<DowJonesIndexResponseData?, Error>) in
@@ -56,7 +70,8 @@ final class StocksInfoService: IStocksInfoService {
                 // TODO: completion with error
                 break
             case .success(let response):
-                self.stocks = response?.constituents.map { StockDataModel(displaySymbol: $0) } ?? []
+                self.stocks = response?.constituents.map { StockDataModel(displaySymbol: $0,
+                                                                          isFavourite: self.userFavorites.contains($0))} ?? []
                 self.stocks.sort(by: { $0.displaySymbol < $1.displaySymbol })
                 self.loadMore(limit: limit, completion: completion)
             }
@@ -70,6 +85,28 @@ final class StocksInfoService: IStocksInfoService {
 
         self.completeStocksInfo(indexesRange: self.lastCompletedCount ..< border,
                                 completion: completion)
+    }
+
+    func updateFavoriteStatus(stockSymbol: String) -> [StockDataModel] {
+        guard let index = stocks.firstIndex(where: { $0.displaySymbol == stockSymbol }) else {
+            return stocks
+        }
+
+        CoreDataManager.shared.save { context in
+            guard let userData = (try? context.fetch(UserData.fetchRequest()) as? [UserData])?.first else { return }
+
+            var favorites = Set(userData.favouriteStocks)
+            if favorites.contains(stockSymbol) {
+                favorites.remove(stockSymbol)
+            } else {
+                favorites.insert(stockSymbol)
+            }
+
+            userData.setValue(Array(favorites), forKey: (\UserData.favouriteStocks).stringValue)
+        }
+
+        stocks[index].isFavourite = !stocks[index].isFavourite
+        return completedStocks
     }
 
 }

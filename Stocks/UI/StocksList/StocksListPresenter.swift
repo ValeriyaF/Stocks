@@ -18,6 +18,8 @@ protocol IStocksListPresenter {
 
     func stockDataModel(index: Int) -> StockDataModel
 
+    func favouriteStateChanged(stockSymbol: String)
+
     var isLoading: Bool { get }
 
     var loadMoreEnable: Bool { get }
@@ -62,6 +64,7 @@ extension StocksListPresenter {
             switch result {
             case .failure(let error):
                 // TODO: - add
+                fatalError("")
                 break
             case .success(let dm):
                 self?.items = dm
@@ -82,6 +85,10 @@ extension StocksListPresenter {
         return items[index]
     }
 
+    func favouriteStateChanged(stockSymbol: String) {
+        items = stocksInfoService.updateFavoriteStatus(stockSymbol: stockSymbol)
+    }
+
     var loadMoreEnable: Bool {
         !stocksInfoService.stocksInfoFilled
     }
@@ -95,11 +102,12 @@ extension StocksListPresenter {
     private func loadStocks(limit: Int) {
         isLoading = true
 
-        stocksInfoService.loadStocks(limit: limit) { [weak self] result in
+        stocksInfoService.refreshStocks(limit: limit) { [weak self] result in
             switch result {
             case .failure(let error):
+                assertionFailure()
                 // TODO: - add
-                break
+                fatalError("")
             case .success(let dm):
                 self?.items = dm
                 DispatchQueue.main.async {

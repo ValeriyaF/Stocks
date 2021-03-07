@@ -10,7 +10,7 @@ import Foundation
 
 struct StockDataModel {
 
-    var isFavourite: Bool = false
+    var isFavourite: Bool
     var logoImageString: String?
     var displaySymbol: String
     var description: String?
@@ -27,8 +27,9 @@ struct StockDataModel {
 
 extension StockDataModel {
 
-    init(displaySymbol: String) {
+    init(displaySymbol: String, isFavourite: Bool) {
         self.displaySymbol = displaySymbol
+        self.isFavourite = isFavourite
     }
 
 }

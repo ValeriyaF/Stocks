@@ -6,11 +6,14 @@
     <entity name="Stock" representedClassName="Stock" syncable="YES">
         <attribute name="currentPrice" optional="YES" attributeType="Double" defaultValueString="0.0" usesScalarValueType="YES"/>
         <attribute name="displaySymbol" attributeType="String"/>
-        <attribute name="isFavourite" optional="YES" attributeType="Boolean" usesScalarValueType="YES"/>
         <attribute name="nameDescription" optional="YES" attributeType="String"/>
     </entity>
+    <entity name="UserData" representedClassName="UserData" syncable="YES">
+        <attribute name="favouriteStocks" attributeType="Transformable" valueTransformerName="NSSecureUnarchiveFromDataTransformer" customClassName="[String]"/>
+    </entity>
     <elements>
-        <element name="Stock" positionX="-63" positionY="-18" width="128" height="89"/>
         <element name="Index" positionX="-54" positionY="18" width="128" height="44"/>
+        <element name="Stock" positionX="-63" positionY="-18" width="128" height="88"/>
+        <element name="UserData" positionX="-27" positionY="36" width="128" height="44"/>
     </elements>
 </model>

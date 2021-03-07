@@ -8,6 +8,7 @@
 
 import UIKit
 import SnapKit
+import CoreData
 
 protocol IStocksListView: class {
 
@@ -49,10 +50,8 @@ final class StocksListViewController: UIViewController, IStocksListView {
         super.viewDidLoad()
 
         setupUI()
-
         presenter?.viewDidLoad()
     }
-
     // MARK: - IStocksListView
 
     func updateStocks() {
@@ -97,8 +96,11 @@ extension StocksListViewController: UITableViewDataSource {
         }
 
         let stockDM = presenter.stockDataModel(index: indexPath.row)
-        let cellVM = StockCellViewModel(with: stockDM, isEmphasized: indexPath.row % 2 == 0)
-        cell.configureUI(with: cellVM)
+        let favouriteStateChangedCompletion = { presenter.favouriteStateChanged(stockSymbol: $0) }
+        let cellVM = StockCellViewModel(with: stockDM,
+                                        isEmphasized: indexPath.row % 2 == 0,
+                                        favouriteStateChangedCompletion: favouriteStateChangedCompletion)
+        cell.viewModel = cellVM
         return cell
     }
 
