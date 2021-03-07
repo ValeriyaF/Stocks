@@ -10,7 +10,7 @@ import UIKit
 
 struct StockCellViewModel {
 
-    var logoImage: UIImage? // https://medium.com/flawless-app-stories/reusable-image-cache-in-swift-9b90eb338e8d
+    var logoImageString: String?
     var isFavourite: Bool
     var isEmphasized: Bool
     var displaySymbol: String
@@ -25,7 +25,7 @@ struct StockCellViewModel {
 extension StockCellViewModel {
 
     init(with dm: StockDataModel, isEmphasized: Bool) {
-//        logoImage = dm.logoImage
+        logoImageString = dm.logoImageString
         isFavourite = dm.isFavourite
         self.isEmphasized = isEmphasized
         displaySymbol = dm.displaySymbol

@@ -12,7 +12,7 @@ protocol IStocksInfoService {
 
     var stocksInfoFilled: Bool { get }
 
-    func loadStocks(limit: Int, completion: @escaping (Result<[StockDataModel], Error>) -> Void)
+    func refreshStocks(limit: Int, completion: @escaping (Result<[StockDataModel], Error>) -> Void)
 
     func loadMore(limit: Int, completion: @escaping (Result<[StockDataModel], Error>) -> Void)
 
@@ -25,7 +25,7 @@ final class StocksInfoService: IStocksInfoService {
     let networkManager: INetworkManager
 
     private let workingQueue = DispatchQueue(label: "stocks.workingQueue", qos: .userInitiated, attributes: .concurrent)
-    private var stocks = [StockDataModel]() // TODO: make atomic or not
+    private var stocks = [StockDataModel]()
     private var lastCompletedCount: Int = 0
     private var completedStocks: [StockDataModel] {
         let completedStocks = stocks.filter { $0.isCompleted }
@@ -43,11 +43,7 @@ final class StocksInfoService: IStocksInfoService {
         self.networkManager = networkManager
     }
 
-    // TODO:  для этого метода будет очистка кэша кордаты
-    func loadStocks(limit: Int, completion: @escaping (Result<[StockDataModel], Error>) -> Void) {
-        guard stocks.isEmpty else {
-            return
-        }
+    func refreshStocks(limit: Int, completion: @escaping (Result<[StockDataModel], Error>) -> Void) {
 
         let djRequest = DowJonesIndexRequest()
         networkManager.loadRequest(request: djRequest) { [weak self] (result: Result<DowJonesIndexResponseData?, Error>) in
@@ -95,7 +91,7 @@ extension StocksInfoService {
                     break
                 case .success(let response):
                     self?.stocks[i].description = response?.name ?? ""
-                    self?.stocks[i].logoImageURL = response?.logoURL
+                    self?.stocks[i].logoImageString = response?.logoURL
                     self?.stocks[i].currency  = response?.currency
                 }
 

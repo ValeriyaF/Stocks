@@ -23,6 +23,8 @@
 		3AD9749F25F1388600ADA762 /* StockQuoteRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AD9749E25F1388600ADA762 /* StockQuoteRequest.swift */; };
 		3AD974A225F2796700ADA762 /* LoadMoreFooter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AD974A125F2796700ADA762 /* LoadMoreFooter.swift */; };
 		3AD974A525F3584800ADA762 /* UIColor+HEX.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AD974A425F3584800ADA762 /* UIColor+HEX.swift */; };
+		3AD974C125F4D04D00ADA762 /* ImageLoader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AD974C025F4D04D00ADA762 /* ImageLoader.swift */; };
+		3AD974C325F4D15700ADA762 /* LoadableImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AD974C225F4D15700ADA762 /* LoadableImageView.swift */; };
 		3AE9066225E7DDDF00B346D3 /* RequestMethod.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AE9066125E7DDDF00B346D3 /* RequestMethod.swift */; };
 		3AE9066425E7DE0600B346D3 /* IRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AE9066325E7DE0600B346D3 /* IRequest.swift */; };
 		3AE9066625E7DE1900B346D3 /* BaseRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AE9066525E7DE1900B346D3 /* BaseRequest.swift */; };
@@ -61,6 +63,8 @@
 		3AD9749E25F1388600ADA762 /* StockQuoteRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StockQuoteRequest.swift; sourceTree = "<group>"; };
 		3AD974A125F2796700ADA762 /* LoadMoreFooter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoadMoreFooter.swift; sourceTree = "<group>"; };
 		3AD974A425F3584800ADA762 /* UIColor+HEX.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIColor+HEX.swift"; sourceTree = "<group>"; };
+		3AD974C025F4D04D00ADA762 /* ImageLoader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageLoader.swift; sourceTree = "<group>"; };
+		3AD974C225F4D15700ADA762 /* LoadableImageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoadableImageView.swift; sourceTree = "<group>"; };
 		3AE9066125E7DDDF00B346D3 /* RequestMethod.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RequestMethod.swift; sourceTree = "<group>"; };
 		3AE9066325E7DE0600B346D3 /* IRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IRequest.swift; sourceTree = "<group>"; };
 		3AE9066525E7DE1900B346D3 /* BaseRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseRequest.swift; sourceTree = "<group>"; };
@@ -114,6 +118,7 @@
 			children = (
 				3A052B2025E3F58500446486 /* StockCell.swift */,
 				3AD9749825EE891200ADA762 /* StockCellViewModel.swift */,
+				3AD974C225F4D15700ADA762 /* LoadableImageView.swift */,
 			);
 			path = Cell;
 			sourceTree = "<group>";
@@ -212,6 +217,22 @@
 			path = Extensions;
 			sourceTree = "<group>";
 		};
+		3AD974BE25F4D01B00ADA762 /* ImageLoader */ = {
+			isa = PBXGroup;
+			children = (
+				3AD974C025F4D04D00ADA762 /* ImageLoader.swift */,
+			);
+			path = ImageLoader;
+			sourceTree = "<group>";
+		};
+		3AD974BF25F4D02700ADA762 /* StocksInfo */ = {
+			isa = PBXGroup;
+			children = (
+				3AE9066E25E7DF8A00B346D3 /* StocksInfoService.swift */,
+			);
+			path = StocksInfo;
+			sourceTree = "<group>";
+		};
 		3AE9066025E7DDBD00B346D3 /* Request */ = {
 			isa = PBXGroup;
 			children = (
@@ -244,7 +265,7 @@
 		3AE9066D25E7DF3400B346D3 /* Services */ = {
 			isa = PBXGroup;
 			children = (
-				3AE9066E25E7DF8A00B346D3 /* StocksInfoService.swift */,
+				3AD974BE25F4D01B00ADA762 /* ImageLoader */,
 			);
 			path = Services;
 			sourceTree = "<group>";
@@ -424,6 +445,7 @@
 				3AD974A225F2796700ADA762 /* LoadMoreFooter.swift in Sources */,
 				3A57741625E3E80000B67F4D /* StocksListViewController.swift in Sources */,
 				3AD974A525F3584800ADA762 /* UIColor+HEX.swift in Sources */,
+				3AD974C325F4D15700ADA762 /* LoadableImageView.swift in Sources */,
 				3AD9749725EBF4A600ADA762 /* StocksListPresenter.swift in Sources */,
 				3AD9749925EE891200ADA762 /* StockCellViewModel.swift in Sources */,
 				3AE9066F25E7DF8A00B346D3 /* StocksInfoService.swift in Sources */,
@@ -431,6 +453,7 @@
 				3AD9749F25F1388600ADA762 /* StockQuoteRequest.swift in Sources */,
 				3A62138B25E26E0C00F4CBAE /* AppDelegate.swift in Sources */,
 				3A052B2425E5153200446486 /* NetworkManager.swift in Sources */,
+				3AD974C125F4D04D00ADA762 /* ImageLoader.swift in Sources */,
 				3AE9066C25E7DE8E00B346D3 /* DowJonesIndexRequest.swift in Sources */,
 				3A052B2125E3F58500446486 /* StockCell.swift in Sources */,
 				3AE9066225E7DDDF00B346D3 /* RequestMethod.swift in Sources */,

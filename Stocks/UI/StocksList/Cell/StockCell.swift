@@ -17,10 +17,12 @@ final class StockCell: UITableViewCell {
         return view
     }()
 
-    private let logoImage: UIImageView = {
-        let imageView = UIImageView()
-        imageView.backgroundColor = .red
+    private let logoImage: LoadableImageView = {
+        let imageView = LoadableImageView()
         imageView.layer.cornerRadius = 12.0
+        imageView.clipsToBounds = true
+        imageView.layer.borderColor = UIColor.black.cgColor
+        imageView.layer.borderWidth = 0.5
         return imageView
     }()
 
@@ -80,10 +82,15 @@ final class StockCell: UITableViewCell {
     }
 
     func configureUI(with viewModel: StockCellViewModel) {
+        if let logoImageString = viewModel.logoImageString {
+            logoImage.getImage(urlString: logoImageString)
+        } else {
+            logoImage.image = nil
+        }
+
         roundedView.backgroundColor = viewModel.isEmphasized
             ? .init(rgb: 0xF0F4F7)
             : .white
-        logoImage.image = viewModel.logoImage // TODO: https://medium.com/flawless-app-stories/reusable-image-cache-in-swift-9b90eb338e8d
         displaySymbolLabel.text = viewModel.displaySymbol
         descriptionLabel.text = viewModel.description
         currentPriceLabel.text = viewModel.currentPrice
@@ -113,7 +120,7 @@ extension StockCell {
 
         roundedView.addSubview(logoImage)
         logoImage.snp.makeConstraints {
-            $0.size.equalTo(Constants.logoSize).priority(.medium)
+            $0.size.equalTo(Constants.logoSize).priority(.high)
             $0.top.equalToSuperview().offset(Constants.logoOffset)
             $0.bottom.equalToSuperview().inset(Constants.logoOffset)
             $0.leading.equalToSuperview().offset(Constants.logoOffset)

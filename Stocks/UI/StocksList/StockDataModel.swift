@@ -11,7 +11,7 @@ import Foundation
 struct StockDataModel {
 
     var isFavourite: Bool = false
-    var logoImageURL: String?
+    var logoImageString: String?
     var displaySymbol: String
     var description: String?
     var currentPrice: Double?
