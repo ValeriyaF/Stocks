@@ -28,7 +28,7 @@ final class StockCell: UITableViewCell {
         imageView.layer.cornerRadius = 12.0
         imageView.clipsToBounds = true
         imageView.layer.borderColor = UIColor.black.cgColor
-        imageView.layer.borderWidth = 0.5
+        imageView.layer.borderWidth = 0.3
         return imageView
     }()
 
@@ -175,7 +175,7 @@ extension StockCell {
 
 extension StockCell {
 
-    @IBAction func favoriteImageViewTapped() {
+    @IBAction private func favoriteImageViewTapped() {
         guard let viewModel = viewModel else { return }
 
         viewModel.favouriteStateChanged()

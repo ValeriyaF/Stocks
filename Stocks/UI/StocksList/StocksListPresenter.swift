@@ -20,6 +20,8 @@ protocol IStocksListPresenter {
 
     func favouriteStateChanged(stockSymbol: String)
 
+    func stocksListTypeChanged(isFavouriteMode: Bool)
+
     var isLoading: Bool { get }
 
     var loadMoreEnable: Bool { get }
@@ -36,7 +38,15 @@ final class StocksListPresenter: IStocksListPresenter {
     // MARK: - Properties
 
     var isLoading: Bool = false
-    private var items = [StockDataModel]()
+    private var _items = [StockDataModel]()
+    private var filteredItems: [StockDataModel] {
+        if isFavouriteMode {
+            return _items.filter { $0.isFavourite }
+        }
+
+        return _items
+    }
+    private var isFavouriteMode = false
 
     // MARK: - Initialisation
 
@@ -67,7 +77,7 @@ extension StocksListPresenter {
                 fatalError("")
                 break
             case .success(let dm):
-                self?.items = dm
+                self?._items = dm
                 DispatchQueue.main.async {
                     self?.view?.hideLoadingMoreIndicator()
                     self?.view?.updateStocks()
@@ -78,19 +88,33 @@ extension StocksListPresenter {
     }
 
     func itemsCount() -> Int {
-        items.count
+        filteredItems.count
     }
 
     func stockDataModel(index: Int) -> StockDataModel {
-        return items[index]
+        return filteredItems[index]
     }
 
     func favouriteStateChanged(stockSymbol: String) {
-        items = stocksInfoService.updateFavoriteStatus(stockSymbol: stockSymbol)
+        _items = stocksInfoService.updateFavoriteStatus(stockSymbol: stockSymbol)
+
+        if isFavouriteMode {
+            DispatchQueue.main.async {
+                self.view?.updateStocks()
+            }
+        }
     }
 
     var loadMoreEnable: Bool {
         !stocksInfoService.stocksInfoFilled
+    }
+
+    func stocksListTypeChanged(isFavouriteMode: Bool) {
+        self.isFavouriteMode = isFavouriteMode
+
+        DispatchQueue.main.async {
+            self.view?.updateStocks()
+        }
     }
 
 }
@@ -109,7 +133,7 @@ extension StocksListPresenter {
                 // TODO: - add
                 fatalError("")
             case .success(let dm):
-                self?.items = dm
+                self?._items = dm
                 DispatchQueue.main.async {
                     self?.view?.updateStocks()
                     self?.isLoading = false

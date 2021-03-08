@@ -51,7 +51,7 @@ final class StockCellViewModel {
         currency = dm.currency
         self.favouriteStateChangedCompletion = favouriteStateChangedCompletion
     }
-    
+
 }
 
 extension StockCellViewModel {

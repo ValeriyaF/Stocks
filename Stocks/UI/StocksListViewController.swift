@@ -40,9 +40,19 @@ final class StocksListViewController: UIViewController, IStocksListView {
         return tableView
     }()
 
-    private lazy var footerView: LoadMoreFooter = {
+    private let footerView: LoadMoreFooter = {
         LoadMoreFooter()
     }()
+
+    private let segmentedControl: UISegmentedControl = {
+        let control = UISegmentedControl(items: [SegmentedControlItem.stocks.stringValue,
+                                                 SegmentedControlItem.favourites.stringValue])
+        control.selectedSegmentIndex = SegmentedControlItem.stocks.rawValue
+        control.addTarget(self, action: #selector(segmentChanged), for: .valueChanged)
+        return control
+    }()
+
+    private var stackView: UIStackView?
 
     // MARK: - Lifecycle
 
@@ -75,8 +85,31 @@ final class StocksListViewController: UIViewController, IStocksListView {
 extension StocksListViewController {
 
     private func setupUI() {
-        view.addSubview(tableView)
-        tableView.snp.makeConstraints { $0.edges.equalToSuperview() }
+        navigationController?.navigationBar.isHidden =  true
+        view.backgroundColor = .white
+
+        let stackView = UIStackView(arrangedSubviews: [segmentedControl, tableView])
+        stackView.axis = .vertical
+        self.stackView = stackView
+
+        view.addSubview(stackView)
+        stackView.snp.makeConstraints {
+            $0.top.equalToSuperview().offset(65.0)
+            $0.bottom.equalToSuperview()
+            $0.leading.equalToSuperview()
+            $0.trailing.equalToSuperview()
+        }
+    }
+
+}
+
+// MARK: - Actions
+
+extension StocksListViewController {
+
+    @IBAction private func segmentChanged() {
+        presenter?.stocksListTypeChanged(isFavouriteMode:
+            segmentedControl.selectedSegmentIndex == SegmentedControlItem.favourites.rawValue)
     }
 
 }
@@ -120,4 +153,20 @@ extension StocksListViewController: UITableViewDataSource {
 
 extension StocksListViewController: UITableViewDelegate {
     // TODO: - Implement
+}
+
+private enum SegmentedControlItem: Int {
+
+    case stocks
+    case favourites
+
+    var stringValue: String {
+        switch self {
+        case .stocks:
+            return "Stocks"
+        case .favourites:
+            return "Favourite"
+        }
+    }
+
 }
