@@ -25,8 +25,7 @@ final class StocksInfoService: IStocksInfoService {
 
     // MARK: - Dependencies
 
-    let networkManager: INetworkManager
-
+    private let networkManager: INetworkManager
     private let workingQueue = DispatchQueue(label: "stocks.workingQueue", qos: .userInitiated, attributes: .concurrent)
 
     private var userFavorites = Set<String>()
@@ -50,6 +49,9 @@ final class StocksInfoService: IStocksInfoService {
     }
 
     func refreshStocks(limit: Int, completion: @escaping (Result<[StockDataModel], Error>) -> Void) {
+        stocks = []
+        lastCompletedCount = 0
+
         if let userData = try? (CoreDataManager.shared.fetch(entity: UserData.self) as? [UserData])?.first {
             userFavorites = Set(userData.favouriteStocks)
         } else {
@@ -68,6 +70,7 @@ final class StocksInfoService: IStocksInfoService {
             switch result {
             case .failure(let error):
                 // TODO: completion with error
+                fatalError()
                 break
             case .success(let response):
                 self.stocks = response?.constituents.map { StockDataModel(displaySymbol: $0,
@@ -125,7 +128,7 @@ extension StocksInfoService {
                 switch result {
                 case .failure(let error):
                     // TODO: completion with error
-                    break
+                    fatalError()
                 case .success(let response):
                     self?.stocks[i].description = response?.name ?? ""
                     self?.stocks[i].logoImageString = response?.logoURL
@@ -141,7 +144,7 @@ extension StocksInfoService {
                 switch result {
                 case .failure(let error):
                     // TODO: completion with error
-                    break
+                    fatalError()
                 case .success(let response):
                     self?.stocks[i].currentPrice = response?.currentPrice ?? 0
                     if let currentPrice = response?.currentPrice,

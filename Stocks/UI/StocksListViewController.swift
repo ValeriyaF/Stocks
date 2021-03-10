@@ -24,10 +24,20 @@ final class StocksListViewController: UIViewController, IStocksListView {
 
     // MARK: - Properties
 
-    let stockCellReuseId = String(describing: type(of: StockCell.self))
     var presenter: IStocksListPresenter?
 
+    private let stockCellReuseId = String(describing: type(of: StockCell.self))
+    private var searchTask: DispatchWorkItem?
+
     // MARK: - UI
+
+    private let searchController = UISearchController(searchResultsController: nil)
+    private lazy var footerView: LoadMoreFooter = LoadMoreFooter()
+    private var refreshControl: UIRefreshControl = {
+        let control = UIRefreshControl()
+        control.addTarget(self, action: #selector(refreshStocks), for: .valueChanged)
+        return control
+    }()
 
     private lazy var tableView: UITableView = {
         let tableView = UITableView(frame: .zero, style: .plain)
@@ -37,11 +47,8 @@ final class StocksListViewController: UIViewController, IStocksListView {
         tableView.estimatedRowHeight = 70.0
         tableView.delegate = self
         tableView.dataSource = self
+        tableView.refreshControl = refreshControl
         return tableView
-    }()
-
-    private let footerView: LoadMoreFooter = {
-        LoadMoreFooter()
     }()
 
     private let segmentedControl: UISegmentedControl = {
@@ -65,6 +72,7 @@ final class StocksListViewController: UIViewController, IStocksListView {
     // MARK: - IStocksListView
 
     func updateStocks() {
+        tableView.refreshControl?.endRefreshing()
         tableView.reloadData()
     }
 
@@ -85,20 +93,20 @@ final class StocksListViewController: UIViewController, IStocksListView {
 extension StocksListViewController {
 
     private func setupUI() {
-        navigationController?.navigationBar.isHidden =  true
+        navigationItem.largeTitleDisplayMode = .always
+        navigationController?.navigationBar.prefersLargeTitles = true
+        navigationItem.title = "Stocks"
+        searchController.delegate = self
+        searchController.searchResultsUpdater = self
+        searchController.obscuresBackgroundDuringPresentation = false
+        searchController.searchBar.placeholder = "Find company or ticker"
+        searchController.definesPresentationContext = true
+        navigationItem.searchController = searchController
+
         view.backgroundColor = .white
 
-        let stackView = UIStackView(arrangedSubviews: [segmentedControl, tableView])
-        stackView.axis = .vertical
-        self.stackView = stackView
-
-        view.addSubview(stackView)
-        stackView.snp.makeConstraints {
-            $0.top.equalToSuperview().offset(65.0)
-            $0.bottom.equalToSuperview()
-            $0.leading.equalToSuperview()
-            $0.trailing.equalToSuperview()
-        }
+        view.addSubview(tableView)
+        tableView.snp.makeConstraints { $0.edges.equalToSuperview() }
     }
 
 }
@@ -112,11 +120,27 @@ extension StocksListViewController {
             segmentedControl.selectedSegmentIndex == SegmentedControlItem.favourites.rawValue)
     }
 
+    @IBAction private func segmentChanged1() {
+        print("")
+    }
+
+    @IBAction private func refreshStocks() {
+        presenter?.refreshStocks()
+    }
+
 }
 
 // MARK: - UITableViewDataSource
 
 extension StocksListViewController: UITableViewDataSource {
+
+    func numberOfSections(in tableView: UITableView) -> Int {
+        return 1
+    }
+
+    func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+        return segmentedControl
+    }
 
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return presenter?.itemsCount() ?? 0
@@ -152,7 +176,46 @@ extension StocksListViewController: UITableViewDataSource {
 // MARK: - UITableViewDelegate
 
 extension StocksListViewController: UITableViewDelegate {
-    // TODO: - Implement
+
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        print("")
+    }
+
+}
+
+// MARK: - UISearchResultsUpdating
+
+extension StocksListViewController: UISearchResultsUpdating {
+
+    func updateSearchResults(for searchController: UISearchController) {
+        self.searchTask?.cancel()
+        guard let searchPhrase = searchController.searchBar.text else {
+            return
+        }
+
+        let task = DispatchWorkItem { [weak self] in
+            self?.presenter?.searchResultsUpdated(searchPhrase: searchPhrase)
+        }
+        self.searchTask = task
+
+        DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 0.5, execute: task)
+    }
+
+}
+
+// MARK: - UISearchControllerDelegate
+
+extension StocksListViewController: UISearchControllerDelegate {
+
+    func willPresentSearchController(_ searchController: UISearchController) {
+        segmentedControl.isEnabled = false
+    }
+
+    func willDismissSearchController(_ searchController: UISearchController) {
+        presenter?.searchFinished()
+        segmentedControl.isEnabled = true
+    }
+
 }
 
 private enum SegmentedControlItem: Int {
