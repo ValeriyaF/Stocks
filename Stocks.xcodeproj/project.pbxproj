@@ -17,6 +17,10 @@
 		3A62139725E26E0D00F4CBAE /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 3A62139625E26E0D00F4CBAE /* Assets.xcassets */; };
 		3A62139A25E26E0D00F4CBAE /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 3A62139825E26E0D00F4CBAE /* LaunchScreen.storyboard */; };
 		3A6213A525E26E0D00F4CBAE /* StocksTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A6213A425E26E0D00F4CBAE /* StocksTests.swift */; };
+		3A8B758125FCB02A00AA40AF /* BaseWSSConnection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A8B758025FCB02A00AA40AF /* BaseWSSConnection.swift */; };
+		3A8B758325FDF0A000AA40AF /* LastPriceUpdatesRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A8B758225FDF0A000AA40AF /* LastPriceUpdatesRequest.swift */; };
+		3A8B758525FE154000AA40AF /* IWSSConnection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A8B758425FE154000AA40AF /* IWSSConnection.swift */; };
+		3A8B758725FE21B900AA40AF /* NetworkError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A8B758625FE21B900AA40AF /* NetworkError.swift */; };
 		3AD9749725EBF4A600ADA762 /* StocksListPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AD9749625EBF4A600ADA762 /* StocksListPresenter.swift */; };
 		3AD9749925EE891200ADA762 /* StockCellViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AD9749825EE891200ADA762 /* StockCellViewModel.swift */; };
 		3AD9749B25EE893C00ADA762 /* StockDataModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AD9749A25EE893C00ADA762 /* StockDataModel.swift */; };
@@ -35,7 +39,7 @@
 		3AD974C725F4E7FA00ADA762 /* UserData+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AD974C525F4E7FA00ADA762 /* UserData+CoreDataProperties.swift */; };
 		3AE9066225E7DDDF00B346D3 /* RequestMethod.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AE9066125E7DDDF00B346D3 /* RequestMethod.swift */; };
 		3AE9066425E7DE0600B346D3 /* IRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AE9066325E7DE0600B346D3 /* IRequest.swift */; };
-		3AE9066625E7DE1900B346D3 /* BaseRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AE9066525E7DE1900B346D3 /* BaseRequest.swift */; };
+		3AE9066625E7DE1900B346D3 /* BaseHttpsRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AE9066525E7DE1900B346D3 /* BaseHttpsRequest.swift */; };
 		3AE9066C25E7DE8E00B346D3 /* DowJonesIndexRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AE9066B25E7DE8E00B346D3 /* DowJonesIndexRequest.swift */; };
 		3AE9066F25E7DF8A00B346D3 /* StocksInfoService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AE9066E25E7DF8A00B346D3 /* StocksInfoService.swift */; };
 /* End PBXBuildFile section */
@@ -65,6 +69,10 @@
 		3A6213A025E26E0D00F4CBAE /* StocksTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = StocksTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		3A6213A425E26E0D00F4CBAE /* StocksTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StocksTests.swift; sourceTree = "<group>"; };
 		3A6213A625E26E0D00F4CBAE /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		3A8B758025FCB02A00AA40AF /* BaseWSSConnection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseWSSConnection.swift; sourceTree = "<group>"; };
+		3A8B758225FDF0A000AA40AF /* LastPriceUpdatesRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LastPriceUpdatesRequest.swift; sourceTree = "<group>"; };
+		3A8B758425FE154000AA40AF /* IWSSConnection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IWSSConnection.swift; sourceTree = "<group>"; };
+		3A8B758625FE21B900AA40AF /* NetworkError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkError.swift; sourceTree = "<group>"; };
 		3AD9749625EBF4A600ADA762 /* StocksListPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StocksListPresenter.swift; sourceTree = "<group>"; };
 		3AD9749825EE891200ADA762 /* StockCellViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StockCellViewModel.swift; sourceTree = "<group>"; };
 		3AD9749A25EE893C00ADA762 /* StockDataModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StockDataModel.swift; sourceTree = "<group>"; };
@@ -83,7 +91,7 @@
 		3AD974C525F4E7FA00ADA762 /* UserData+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UserData+CoreDataProperties.swift"; sourceTree = SOURCE_ROOT; };
 		3AE9066125E7DDDF00B346D3 /* RequestMethod.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RequestMethod.swift; sourceTree = "<group>"; };
 		3AE9066325E7DE0600B346D3 /* IRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IRequest.swift; sourceTree = "<group>"; };
-		3AE9066525E7DE1900B346D3 /* BaseRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseRequest.swift; sourceTree = "<group>"; };
+		3AE9066525E7DE1900B346D3 /* BaseHttpsRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseHttpsRequest.swift; sourceTree = "<group>"; };
 		3AE9066B25E7DE8E00B346D3 /* DowJonesIndexRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DowJonesIndexRequest.swift; sourceTree = "<group>"; };
 		3AE9066E25E7DF8A00B346D3 /* StocksInfoService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StocksInfoService.swift; sourceTree = "<group>"; };
 		CC9E57B34B0D66802A30CB14 /* Pods-Stocks.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Stocks.debug.xcconfig"; path = "Target Support Files/Pods-Stocks/Pods-Stocks.debug.xcconfig"; sourceTree = "<group>"; };
@@ -144,6 +152,7 @@
 			children = (
 				3AE9066025E7DDBD00B346D3 /* Request */,
 				3A052B2325E5153200446486 /* NetworkManager.swift */,
+				3A8B758625FE21B900AA40AF /* NetworkError.swift */,
 			);
 			path = Network;
 			sourceTree = "<group>";
@@ -285,8 +294,10 @@
 		3AE9066725E7DE4000B346D3 /* Base */ = {
 			isa = PBXGroup;
 			children = (
-				3AE9066525E7DE1900B346D3 /* BaseRequest.swift */,
+				3AE9066525E7DE1900B346D3 /* BaseHttpsRequest.swift */,
+				3A8B758025FCB02A00AA40AF /* BaseWSSConnection.swift */,
 				3AE9066325E7DE0600B346D3 /* IRequest.swift */,
+				3A8B758425FE154000AA40AF /* IWSSConnection.swift */,
 				3AE9066125E7DDDF00B346D3 /* RequestMethod.swift */,
 			);
 			path = Base;
@@ -296,6 +307,7 @@
 			isa = PBXGroup;
 			children = (
 				3AE9066B25E7DE8E00B346D3 /* DowJonesIndexRequest.swift */,
+				3A8B758225FDF0A000AA40AF /* LastPriceUpdatesRequest.swift */,
 				3AD9749C25EFDBEF00ADA762 /* StockProfileRequest.swift */,
 				3AD9749E25F1388600ADA762 /* StockQuoteRequest.swift */,
 			);
@@ -482,11 +494,13 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				3AE9066625E7DE1900B346D3 /* BaseRequest.swift in Sources */,
+				3AE9066625E7DE1900B346D3 /* BaseHttpsRequest.swift in Sources */,
 				3AD974A225F2796700ADA762 /* LoadMoreFooter.swift in Sources */,
 				3A57741625E3E80000B67F4D /* StocksListViewController.swift in Sources */,
 				3AD974A525F3584800ADA762 /* UIColor+HEX.swift in Sources */,
 				3AD974C325F4D15700ADA762 /* LoadableImageView.swift in Sources */,
+				3A8B758725FE21B900AA40AF /* NetworkError.swift in Sources */,
+				3A8B758525FE154000AA40AF /* IWSSConnection.swift in Sources */,
 				3AD974C625F4E7FA00ADA762 /* UserData+CoreDataClass.swift in Sources */,
 				3AD974B925F3C40100ADA762 /* Stock+CoreDataProperties.swift in Sources */,
 				3AD9749725EBF4A600ADA762 /* StocksListPresenter.swift in Sources */,
@@ -502,10 +516,12 @@
 				3A052B2425E5153200446486 /* NetworkManager.swift in Sources */,
 				3AD974C125F4D04D00ADA762 /* ImageLoader.swift in Sources */,
 				3AE9066C25E7DE8E00B346D3 /* DowJonesIndexRequest.swift in Sources */,
+				3A8B758325FDF0A000AA40AF /* LastPriceUpdatesRequest.swift in Sources */,
 				3A052B2125E3F58500446486 /* StockCell.swift in Sources */,
 				3AD974A825F3889E00ADA762 /* CoreDataManager.swift in Sources */,
 				3AE9066225E7DDDF00B346D3 /* RequestMethod.swift in Sources */,
 				3A62139525E26E0C00F4CBAE /* Stocks.xcdatamodeld in Sources */,
+				3A8B758125FCB02A00AA40AF /* BaseWSSConnection.swift in Sources */,
 				3A0544D625F525AB00AE956F /* KeyPath+stringValue.swift in Sources */,
 				3AD9749D25EFDBEF00ADA762 /* StockProfileRequest.swift in Sources */,
 				3AD9749B25EE893C00ADA762 /* StockDataModel.swift in Sources */,

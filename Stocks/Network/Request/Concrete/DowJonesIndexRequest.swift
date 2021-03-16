@@ -18,7 +18,7 @@ struct DowJonesIndexResponseData: Decodable {
 
 }
 
-final class DowJonesIndexRequest: BaseRequest {
+final class DowJonesIndexRequest: BaseHttpsRequest {
 
     override var path: String {
         return "/index/constituents"

@@ -35,7 +35,7 @@ struct StockProfileResponseData: Decodable {
 
 }
 
-final class StockProfileRequest: BaseRequest {
+final class StockProfileRequest: BaseHttpsRequest {
 
     let symbol: String
 

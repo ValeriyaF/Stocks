@@ -20,7 +20,7 @@ struct StockQuoteResponseData: Decodable {
 
 }
 
-final class StockQuoteRequest: BaseRequest {
+final class StockQuoteRequest: BaseHttpsRequest {
 
     let symbol: String
 

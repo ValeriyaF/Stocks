@@ -15,8 +15,25 @@ struct StockDataModel {
     var displaySymbol: String
     var description: String?
     var currentPrice: Double?
-    var dayDelta: Double?
-    var dayDeltaPersent: Double?
+    var dayOpenPrice: Double?
+    var dayDelta: Double? {
+        guard let currentPrice = currentPrice,
+            let dayOpenPrice = dayOpenPrice else {
+            return nil
+        }
+
+        return currentPrice - dayOpenPrice
+    }
+    
+    var dayDeltaPersent: Double? {
+        guard let currentPrice = currentPrice,
+            let dayOpenPrice = dayOpenPrice else {
+            return nil
+        }
+
+        return 100 * (currentPrice - dayOpenPrice) / dayOpenPrice
+    }
+
     var currency: CurrencyType?
 
     var isCompleted: Bool {

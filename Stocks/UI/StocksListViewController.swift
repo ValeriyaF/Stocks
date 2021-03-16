@@ -14,6 +14,8 @@ protocol IStocksListView: class {
 
     func updateStocks()
 
+    func updateVisibleStocksPrice()
+
     func showLoadingMoreIndicator()
 
     func hideLoadingMoreIndicator()
@@ -74,6 +76,23 @@ final class StocksListViewController: UIViewController, IStocksListView {
     func updateStocks() {
         tableView.refreshControl?.endRefreshing()
         tableView.reloadData()
+    }
+
+    func updateVisibleStocksPrice() {
+        tableView.indexPathsForVisibleRows?.forEach { indexPath in
+            guard let presenter = presenter,
+                let cell = tableView.cellForRow(at: indexPath) as? StockCell else {
+                    return
+            }
+
+            let stockDM = presenter.stockDataModel(index: indexPath.row)
+            let favouriteStateChangedCompletion = { presenter.favouriteStateChanged(stockSymbol: $0) }
+            let cellVM = StockCellViewModel(with: stockDM,
+                                            isEmphasized: indexPath.row % 2 == 0,
+                                            favouriteStateChangedCompletion: favouriteStateChangedCompletion)
+            cell.viewModel = cellVM
+            cell.updatePrice()
+        }
     }
 
     func showLoadingMoreIndicator() {
@@ -158,6 +177,7 @@ extension StocksListViewController: UITableViewDataSource {
                                         isEmphasized: indexPath.row % 2 == 0,
                                         favouriteStateChangedCompletion: favouriteStateChangedCompletion)
         cell.viewModel = cellVM
+        cell.configureUI()
         return cell
     }
 

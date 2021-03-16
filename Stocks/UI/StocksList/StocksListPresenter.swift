@@ -63,6 +63,8 @@ final class StocksListPresenter: IStocksListPresenter {
     private var isFavouriteMode = false
     private var searchPhrase: String?
 
+    private lazy var incomingWSSMessageCompletion: (Result<[StockDataModel], Error>) -> Void = incomingWSSMessage()
+
     // MARK: - Initialisation
 
     init(view: IStocksListView,
@@ -90,17 +92,23 @@ extension StocksListPresenter {
         view?.showLoadingMoreIndicator()
 
         stocksInfoService.loadMore(limit: 10) { [weak self] result in
+            guard let self = self else { return }
+
             switch result {
             case .failure(let error):
                 // TODO: - add
                 fatalError("")
                 break
             case .success(let dm):
-                self?._items = dm
+                let diff = Array(dm.dropFirst(self._items.count))
+                // TODO: ждять пока выполнится
+                self.setupLifePriceUpdate(for: diff)
+
+                self._items = dm
                 DispatchQueue.main.async {
-                    self?.view?.hideLoadingMoreIndicator()
-                    self?.view?.updateStocks()
-                    self?.isLoading = false
+                    self.view?.hideLoadingMoreIndicator()
+                    self.view?.updateStocks()
+                    self.isLoading = false
                 }
             }
         }
@@ -161,17 +169,44 @@ extension StocksListPresenter {
         isLoading = true
 
         stocksInfoService.refreshStocks(limit: limit) { [weak self] result in
+            guard let self = self else { return }
+
             switch result {
             case .failure(let error):
                 assertionFailure()
                 // TODO: - add
                 fatalError("")
             case .success(let dm):
+                let diff = Array(dm.dropFirst(self._items.count))
+                // TODO: ждять пока выполнится
+                self.setupLifePriceUpdate(for: diff)
+                self._items = dm
+
+                DispatchQueue.main.async {
+                    self.view?.updateStocks()
+                    self.isLoading = false
+                }
+            }
+        }
+    }
+
+    private func setupLifePriceUpdate(for dm: [StockDataModel]) {
+        dm.forEach { stock in
+            stocksInfoService.getLifePriceUpdate(symbol: stock.displaySymbol, completion: incomingWSSMessageCompletion)
+        }
+    }
+
+    private func incomingWSSMessage() -> ((Result<[StockDataModel], Error>) -> Void) {
+        return  { [weak self] result in
+            switch result {
+            case .success(let dm):
                 self?._items = dm
                 DispatchQueue.main.async {
-                    self?.view?.updateStocks()
-                    self?.isLoading = false
+                    self?.view?.updateVisibleStocksPrice()
                 }
+            case .failure(let error):
+                // TODO: make
+                break
             }
         }
     }

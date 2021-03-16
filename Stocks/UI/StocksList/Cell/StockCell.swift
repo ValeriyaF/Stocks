@@ -10,11 +10,7 @@ import SnapKit
 
 final class StockCell: UITableViewCell {
 
-    var viewModel: StockCellViewModel? {
-        didSet {
-            configureUI()
-        }
-    }
+    var viewModel: StockCellViewModel?
 
     // MARK: - UI
 
@@ -149,7 +145,7 @@ extension StockCell {
         layoutIfNeeded()
     }
 
-    private func configureUI() {
+    func configureUI() {
         guard let viewModel = viewModel else { return }
 
         if let logoImageString = viewModel.logoImageString {
@@ -167,6 +163,13 @@ extension StockCell {
         dayDeltaLabel.text = viewModel.dayDelta
         dayDeltaLabel.textColor = viewModel.isNegativeDayDelta ? .init(rgb: 0xB22424) : .init(rgb: 0x24B25D)
         favoriteImageView.image = viewModel.isFavourite ? Images.favorite : Images.unfavorite
+    }
+
+    func updatePrice() {
+        guard let viewModel = viewModel else { return }
+
+        currentPriceLabel.text = viewModel.currentPrice
+        dayDeltaLabel.text = viewModel.dayDelta
     }
 
 }

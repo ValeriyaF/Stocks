@@ -19,6 +19,14 @@ protocol IStocksInfoService {
 
     func updateFavoriteStatus(stockSymbol: String) -> [StockDataModel]
 
+    func getLifePriceUpdate(symbol: String, completion: @escaping (Result<[StockDataModel], Error>) -> Void)
+
+}
+
+protocol LifePriceUpdateDelegate: class {
+
+    func didUpdatePrice(symbol: String)
+
 }
 
 final class StocksInfoService: IStocksInfoService {
@@ -26,9 +34,14 @@ final class StocksInfoService: IStocksInfoService {
     // MARK: - Dependencies
 
     private let networkManager: INetworkManager
-    private let workingQueue = DispatchQueue(label: "stocks.workingQueue", qos: .userInitiated, attributes: .concurrent)
 
+    // MARK: - Properties
+
+    var lifePriceUpdateDelegates = [LifePriceUpdateDelegate]()
+
+    private let workingQueue = DispatchQueue(label: "stocks.workingQueue", qos: .userInitiated, attributes: .concurrent)
     private var userFavorites = Set<String>()
+    private lazy var lastPriceUpdatesConnection = LastPriceUpdatesConnection()
 
     private var stocks = [StockDataModel]()
     private var lastCompletedCount: Int = 0
@@ -112,6 +125,30 @@ final class StocksInfoService: IStocksInfoService {
         return completedStocks
     }
 
+    func getLifePriceUpdate(symbol: String, completion: @escaping (Result<[StockDataModel], Error>) -> Void) {
+        guard let message = lastPriceUpdatesConnection.subscribeToSymbolMessage(symbol: symbol) else {
+            return
+        }
+
+        networkManager.sendWSSMessage(request: lastPriceUpdatesConnection,
+                                      msg: message) { [weak self] (result: (Result<LastPriceUpdatesResponse?, Error>)) in
+                                        guard let self = self else { return }
+
+                                        switch result {
+                                        case .success(let response):
+                                            response?.data.forEach { symbolPrice in
+                                                if let index = self.stocks.firstIndex(where: { $0.displaySymbol == symbolPrice.symbol }) {
+                                                    self.stocks[index].currentPrice = symbolPrice.price
+                                                }
+                                            }
+
+                                            completion(.success(self.completedStocks))
+                                        case .failure(let error):
+                                            completion(.failure(error))
+                                        }
+        }
+    }
+
 }
 
 // MARK: - Private methods
@@ -147,11 +184,7 @@ extension StocksInfoService {
                     fatalError()
                 case .success(let response):
                     self?.stocks[i].currentPrice = response?.currentPrice ?? 0
-                    if let currentPrice = response?.currentPrice,
-                        let dayOpenPrice = response?.dayOpenPrice {
-                        self?.stocks[i].dayDelta = currentPrice - dayOpenPrice
-                        self?.stocks[i].dayDeltaPersent = 100 * (currentPrice - dayOpenPrice) / dayOpenPrice
-                    }
+                    self?.stocks[i].dayOpenPrice = response?.dayOpenPrice ?? 0
                 }
                 dispatchGroup.leave()
             }
@@ -163,7 +196,6 @@ extension StocksInfoService {
     }
 
     private func loadStockProfile(limit: Int) {
-
     }
 
 }

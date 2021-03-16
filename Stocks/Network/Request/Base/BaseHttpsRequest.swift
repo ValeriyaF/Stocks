@@ -1,5 +1,5 @@
 //
-//  BaseRequest.swift
+//  BaseHttpsRequest.swift
 //  Stocks
 //
 //  Created by Valeriya Fisenko on 25.02.2021.
@@ -8,7 +8,7 @@
 
 import Foundation
 
-class BaseRequest: IRequest {
+class BaseHttpsRequest: IRequest {
 
     var httpMethod: RequestMethod {
         .get
@@ -35,7 +35,7 @@ class BaseRequest: IRequest {
 
         var request = URLRequest(url: url)
         request.httpMethod = httpMethod.rawValue
-        request.allHTTPHeaderFields = ["X-Finnhub-Token": "sandbox_c0ovj3v48v6rduk5poa0"] // TODO: - move api key
+        request.allHTTPHeaderFields = ["X-Finnhub-Token": "c0ovj3v48v6rduk5po9g"] // TODO: - move api key
         return request
     }
 
