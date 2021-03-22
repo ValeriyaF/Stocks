@@ -8,17 +8,9 @@
 
 import Foundation
 
-struct DowJonesIndexResponseData: Decodable {
-
-    let constituents: [String]
-
-    enum CodingKeys: String, CodingKey {
-        case constituents
-    }
-
-}
-
 final class DowJonesIndexRequest: BaseHttpsRequest {
+
+    // MARK: - Overrides
 
     override var path: String {
         return "/index/constituents"

@@ -17,9 +17,11 @@ protocol INetworkManager {
                                                              msg: URLSessionWebSocketTask.Message,
                                                              completion: @escaping (Result<Model?, Error>) -> Void)
 
+    func closeConnection<T: IWSSConnection>(request: T)
+
 }
 
-final class NetworkManager: INetworkManager {
+final class NetworkManager {
 
     // MARK: - Properties
 
@@ -33,6 +35,12 @@ final class NetworkManager: INetworkManager {
     deinit {
         webSocketTasks.forEach { $0.value.cancel() }
     }
+
+}
+
+// MARK: - INetworkManager
+
+extension NetworkManager: INetworkManager {
 
     func loadRequest<Model: Decodable>(request: IRequest,
                                        completion: @escaping (Result<Model?, Error>) -> Void) {
@@ -63,7 +71,8 @@ final class NetworkManager: INetworkManager {
         if webSocketTasks[taskID] == nil {
             do {
                 try openWSSConnection(request: request, taskID: taskID)
-            } catch { completion(.failure(error))
+            } catch {
+                completion(.failure(error))
                 return
             }
         }
@@ -84,7 +93,17 @@ final class NetworkManager: INetworkManager {
         }
     }
 
+    func closeConnection<T: IWSSConnection>(request: T) {
+        let taskID = String(describing: request.self)
+        if webSocketTasks[taskID] != nil {
+            webSocketTasks[taskID]?.cancel()
+            webSocketTasks[taskID] = nil
+        }
+    }
+
 }
+
+// MARK: - Private methods
 
 extension NetworkManager {
 
@@ -103,7 +122,7 @@ extension NetworkManager {
     private func sendWSSPing(task: URLSessionWebSocketTask) {
         task.sendPing { error in
             if let error = error {
-                print("Sending PING failed: \(error)")
+//                assertionFailure("Sending ping failed: \(error)")
             }
 
             self.wssWorkingQueue.asyncAfter(deadline: .now() + 10) {
@@ -140,7 +159,8 @@ extension NetworkManager {
 
                 self.receiveWSS(task: task, completion: completion)
             case .failure(let error):
-                completion(.failure(error))
+                break
+//                completion(.failure(error))
             }
         }
     }

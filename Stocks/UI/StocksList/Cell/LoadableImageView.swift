@@ -14,7 +14,7 @@ final class LoadableImageView: UIImageView {
 
     func getImage(urlString: String) {
         image = nil
-        self.imageURL = urlString
+        imageURL = urlString
         ImageLoader.shared.getImage(imageURL: urlString, for: self)
     }
 

@@ -1,8 +1,8 @@
 //
-//  StockProfileRequest.swift
+//  StockProfileResponseData.swift
 //  Stocks
 //
-//  Created by Valeriya Fisenko on 03.03.2021.
+//  Created by Valeriya Fisenko on 16.03.2021.
 //  Copyright © 2021 valeri. All rights reserved.
 //
 
@@ -18,7 +18,7 @@ enum CurrencyType: String, Decodable {
             return "$"
         }
     }
-    
+
 }
 
 struct StockProfileResponseData: Decodable {
@@ -31,24 +31,6 @@ struct StockProfileResponseData: Decodable {
         case currency
         case logoURL = "logo"
         case name
-    }
-
-}
-
-final class StockProfileRequest: BaseHttpsRequest {
-
-    let symbol: String
-
-    init(symbol: String) {
-        self.symbol = symbol
-    }
-
-    override var path: String {
-        return "/stock/profile2"
-    }
-
-    override var queryItems: [URLQueryItem] {
-        [URLQueryItem(name: "symbol", value: symbol)]
     }
 
 }

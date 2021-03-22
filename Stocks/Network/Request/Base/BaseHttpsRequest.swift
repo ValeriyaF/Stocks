@@ -8,7 +8,9 @@
 
 import Foundation
 
-class BaseHttpsRequest: IRequest {
+class BaseHttpsRequest {
+
+    // MARK: - Properties
 
     var httpMethod: RequestMethod {
         .get
@@ -21,6 +23,12 @@ class BaseHttpsRequest: IRequest {
     var queryItems: [URLQueryItem] {
         []
     }
+
+}
+
+// MARK: - IRequest
+
+extension BaseHttpsRequest: IRequest {
 
     var urlRequest: URLRequest? {
         var components = URLComponents()
@@ -35,7 +43,8 @@ class BaseHttpsRequest: IRequest {
 
         var request = URLRequest(url: url)
         request.httpMethod = httpMethod.rawValue
-        request.allHTTPHeaderFields = ["X-Finnhub-Token": "c0ovj3v48v6rduk5po9g"] // TODO: - move api key
+        // put api key here
+        request.allHTTPHeaderFields = ["X-Finnhub-Token": ""]
         return request
     }
 

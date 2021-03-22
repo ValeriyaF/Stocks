@@ -21,10 +21,10 @@ final class StockCell: UITableViewCell {
 
     private let logoImage: LoadableImageView = {
         let imageView = LoadableImageView()
-        imageView.layer.cornerRadius = 12.0
+        imageView.layer.cornerRadius = Constants.logoImageCornerRadius
         imageView.clipsToBounds = true
         imageView.layer.borderColor = UIColor.black.cgColor
-        imageView.layer.borderWidth = 0.3
+        imageView.layer.borderWidth = Constants.logoImageBorderWidth
         return imageView
     }()
 
@@ -35,31 +35,27 @@ final class StockCell: UITableViewCell {
 
     private let displaySymbolLabel: UILabel = {
         let label = UILabel()
-        label.font = UIFont(name: "Avenir-Heavy", size: 18.0) // TODO: add consts
-        // TODO: add hugginhg priority constr
+        label.font = Font.avenirHeavyHigh
         return label
     }()
 
     private let descriptionLabel: UILabel = {
         let label = UILabel()
-        label.font = UIFont(name: "Avenir-Medium", size: 12.0) // TODO: add consts and use R.Swift
-        // TODO: add hugginhg priority constr
+        label.font = Font.avenirMedium
         return label
     }()
 
     private let currentPriceLabel: UILabel = {
         let label = UILabel()
-        label.font = UIFont(name: "Avenir-Heavy", size: 18.0) // TODO: add consts
+        label.font = Font.avenirHeavyHigh
         label.textAlignment = .right
-        // TODO: add hugginhg priority constr
         return label
     }()
 
     private let dayDeltaLabel: UILabel = {
         let label = UILabel()
-        label.font = UIFont(name: "Avenir-Medium", size: 12.0) // TODO: add consts
+        label.font = Font.avenirMedium
         label.textAlignment = .right
-        // TODO: add hugginhg priority constr
         return label
     }()
 
@@ -92,14 +88,14 @@ extension StockCell {
     private func setupUI() {
         selectionStyle = .none
 
-        roundedView.layer.cornerRadius = 16.0
+        roundedView.layer.cornerRadius = Constants.roundedViewCornerRadius
 
         contentView.addSubview(roundedView)
         roundedView.snp.makeConstraints {
-            $0.top.equalToSuperview().offset(8)
-            $0.leading.equalToSuperview().offset(8)
-            $0.bottom.equalToSuperview().inset(8)
-            $0.trailing.equalToSuperview().inset(8)
+            $0.top.equalToSuperview().offset(Constants.roundedViewOffset)
+            $0.leading.equalToSuperview().offset(Constants.roundedViewOffset)
+            $0.bottom.equalToSuperview().inset(Constants.roundedViewOffset)
+            $0.trailing.equalToSuperview().inset(Constants.roundedViewOffset)
         }
 
         roundedView.addSubview(logoImage)
@@ -112,28 +108,24 @@ extension StockCell {
 
         roundedView.addSubview(displaySymbolLabel)
         displaySymbolLabel.snp.makeConstraints {
-            $0.height.equalTo(24)
-            $0.top.equalToSuperview().offset(14)
-            $0.leading.equalTo(logoImage.snp.trailing).offset(12)
+            $0.height.equalTo(Constants.displaySymbolLabelHeight)
+            $0.top.equalToSuperview().offset(Constants.displaySymbolLabeltopOffset)
+            $0.leading.equalTo(logoImage.snp.trailing).offset(Constants.displaySymbolLabelLeadingOffset)
         }
 
         roundedView.addSubview(descriptionLabel)
         descriptionLabel.snp.makeConstraints {
             $0.top.equalTo(displaySymbolLabel.snp.bottom)
             $0.leading.equalTo(displaySymbolLabel)
-            $0.width.equalTo(170)
+            $0.width.equalTo(Constants.descriptionLabelWidth)
         }
 
         roundedView.addSubview(favoriteImageView)
         favoriteImageView.snp.makeConstraints {
-            $0.size.equalTo(16)
-            $0.top.equalToSuperview().offset(15)
-            $0.leading.equalTo(displaySymbolLabel.snp.trailing).offset(6)
+            $0.size.equalTo(Constants.favoriteImageViewSize)
+            $0.top.equalToSuperview().offset(Constants.favoriteImageViewTopOffset)
+            $0.leading.equalTo(displaySymbolLabel.snp.trailing).offset(Constants.favoriteImageViewLeadingOffset)
         }
-
-        let tapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(favoriteImageViewTapped))
-        favoriteImageView.isUserInteractionEnabled = true
-        favoriteImageView.addGestureRecognizer(tapGestureRecognizer)
 
         roundedView.addSubview(priceStackView)
         priceStackView.snp.makeConstraints {
@@ -142,8 +134,16 @@ extension StockCell {
             $0.bottom.equalToSuperview().inset(14)
         }
 
-        layoutIfNeeded()
+        let tapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(favoriteImageViewTapped))
+        favoriteImageView.isUserInteractionEnabled = true
+        favoriteImageView.addGestureRecognizer(tapGestureRecognizer)
     }
+
+}
+
+// MARK: - Public methods
+
+extension StockCell {
 
     func configureUI() {
         guard let viewModel = viewModel else { return }
@@ -186,6 +186,8 @@ extension StockCell {
     }
 }
 
+// MARK: - Constants
+
 private enum Images {
 
     static let favorite: UIImage = UIImage(named: "yellowStar")!
@@ -193,7 +195,27 @@ private enum Images {
 
 }
 
+private enum Font {
+
+    static let avenirHeavyHigh = UIFont(name: "Avenir-Heavy", size: 18.0)
+    static let avenirMedium = UIFont(name: "Avenir-Medium", size: 12.0)
+
+}
+
 private enum Constants {
-    static let logoSize: CGSize = CGSize(width: 52.0, height: 52.0)
-    static let logoOffset: CGFloat = 8.0
+
+    static let roundedViewCornerRadius: CGFloat = 16
+    static let logoSize: CGSize = CGSize(width: 52, height: 52)
+    static let logoOffset: CGFloat = 8
+    static let roundedViewOffset: CGFloat = 8
+    static let displaySymbolLabelHeight: CGFloat = 24
+    static let displaySymbolLabeltopOffset: CGFloat = 14
+    static let displaySymbolLabelLeadingOffset: CGFloat = 12
+    static let descriptionLabelWidth: CGFloat = 170
+    static let favoriteImageViewSize: CGFloat = 16
+    static let favoriteImageViewTopOffset: CGFloat = 15
+    static let favoriteImageViewLeadingOffset: CGFloat = 6
+    static let logoImageCornerRadius: CGFloat = 12
+    static let logoImageBorderWidth: CGFloat = 0.3
+
 }

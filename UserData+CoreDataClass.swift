@@ -11,6 +11,4 @@ import Foundation
 import CoreData
 
 @objc(UserData)
-public class UserData: NSManagedObject {
-
-}
+public class UserData: NSManagedObject { }

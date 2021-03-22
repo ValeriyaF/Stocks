@@ -14,11 +14,15 @@ protocol IStocksListView: class {
 
     func updateStocks()
 
+    func endRefreshing()
+
     func updateVisibleStocksPrice()
 
     func showLoadingMoreIndicator()
 
     func hideLoadingMoreIndicator()
+
+    func showErrorAlert(error: Error)
 
 }
 
@@ -35,7 +39,7 @@ final class StocksListViewController: UIViewController, IStocksListView {
 
     private let searchController = UISearchController(searchResultsController: nil)
     private lazy var footerView: LoadMoreFooter = LoadMoreFooter()
-    private var refreshControl: UIRefreshControl = {
+    private lazy var refreshControl: UIRefreshControl = {
         let control = UIRefreshControl()
         control.addTarget(self, action: #selector(refreshStocks), for: .valueChanged)
         return control
@@ -71,11 +75,19 @@ final class StocksListViewController: UIViewController, IStocksListView {
         setupUI()
         presenter?.viewDidLoad()
     }
-    // MARK: - IStocksListView
+
+}
+
+// MARK: - IStocksListView
+
+extension StocksListViewController {
 
     func updateStocks() {
-        tableView.refreshControl?.endRefreshing()
         tableView.reloadData()
+    }
+
+    func endRefreshing() {
+        tableView.refreshControl?.endRefreshing()
     }
 
     func updateVisibleStocksPrice() {
@@ -103,6 +115,14 @@ final class StocksListViewController: UIViewController, IStocksListView {
     func hideLoadingMoreIndicator() {
         footerView.isLoading = false
         tableView.tableFooterView = nil
+    }
+
+    func showErrorAlert(error: Error) {
+        let alert = UIAlertController(title: "Smth went wrong",
+                                      message: error.localizedDescription,
+                                      preferredStyle: UIAlertController.Style.alert)
+        alert.addAction(UIAlertAction(title: "OK", style: UIAlertAction.Style.default, handler: nil))
+        self.present(alert, animated: true, completion: nil)
     }
 
 }
@@ -137,10 +157,6 @@ extension StocksListViewController {
     @IBAction private func segmentChanged() {
         presenter?.stocksListTypeChanged(isFavouriteMode:
             segmentedControl.selectedSegmentIndex == SegmentedControlItem.favourites.rawValue)
-    }
-
-    @IBAction private func segmentChanged1() {
-        print("")
     }
 
     @IBAction private func refreshStocks() {
@@ -195,13 +211,7 @@ extension StocksListViewController: UITableViewDataSource {
 
 // MARK: - UITableViewDelegate
 
-extension StocksListViewController: UITableViewDelegate {
-
-    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        print("")
-    }
-
-}
+extension StocksListViewController: UITableViewDelegate { }
 
 // MARK: - UISearchResultsUpdating
 

@@ -8,25 +8,17 @@
 
 import Foundation
 
-struct StockQuoteResponseData: Decodable {
-
-    let dayOpenPrice: Double?
-    let currentPrice: Double?
-
-    enum CodingKeys: String, CodingKey {
-        case dayOpenPrice = "o"
-        case currentPrice = "c"
-    }
-
-}
-
 final class StockQuoteRequest: BaseHttpsRequest {
 
     let symbol: String
 
+    // MARK: - Initialisation
+
     init(symbol: String) {
         self.symbol = symbol
     }
+
+    // MARK: - Overrides
 
     override var path: String {
         return "/quote"

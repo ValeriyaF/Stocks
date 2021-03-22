@@ -10,9 +10,13 @@ import UIKit
 
 final class ImageLoader {
 
-    static let shared = ImageLoader()
+    // MARK: - Properties
 
     private let imageCache = NSCache<NSString, NSData>()
+
+    // MARK: - Singleton
+
+    static let shared = ImageLoader()
 
     private init() { }
 
@@ -30,17 +34,16 @@ final class ImageLoader {
         load(urlString: urlString, imageView: imageView)
     }
 
-    // MARK: - Private methods
+}
+
+// MARK: - Private methods
+
+extension ImageLoader {
 
     private func load(urlString: String, imageView: LoadableImageView) {
         guard let url = URL(string: urlString) else { return }
 
-        URLSession.shared.dataTask(with: url) { [weak self] data, _, error in
-            if let error = error {
-                // TODO: -
-                assertionFailure()
-            }
-
+        URLSession.shared.dataTask(with: url) { [weak self] data, _, _ in
             if let data = data,
                 let image = UIImage(data: data) {
                 self?.imageCache.setObject(data as NSData, forKey: url.absoluteString as NSString)
@@ -52,4 +55,5 @@ final class ImageLoader {
             }
         }.resume()
     }
+
 }

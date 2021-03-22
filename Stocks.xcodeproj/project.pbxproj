@@ -11,6 +11,11 @@
 		3A052B2125E3F58500446486 /* StockCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A052B2025E3F58500446486 /* StockCell.swift */; };
 		3A052B2425E5153200446486 /* NetworkManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A052B2325E5153200446486 /* NetworkManager.swift */; };
 		3A0544D625F525AB00AE956F /* KeyPath+stringValue.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A0544D525F525AB00AE956F /* KeyPath+stringValue.swift */; };
+		3A55A5FB2600F94300E7F53D /* DowJonesIndexResponseData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A55A5FA2600F94300E7F53D /* DowJonesIndexResponseData.swift */; };
+		3A55A5FE2600F97900E7F53D /* LastPriceUpdatesResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A55A5FD2600F97900E7F53D /* LastPriceUpdatesResponse.swift */; };
+		3A55A6002600F99C00E7F53D /* LastPriceUpdatesMessage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A55A5FF2600F99B00E7F53D /* LastPriceUpdatesMessage.swift */; };
+		3A55A6032600F9CF00E7F53D /* StockProfileResponseData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A55A6022600F9CE00E7F53D /* StockProfileResponseData.swift */; };
+		3A55A6062600FA2100E7F53D /* StockQuoteResponseData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A55A6052600FA2100E7F53D /* StockQuoteResponseData.swift */; };
 		3A57741625E3E80000B67F4D /* StocksListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A57741525E3E80000B67F4D /* StocksListViewController.swift */; };
 		3A62138B25E26E0C00F4CBAE /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A62138A25E26E0C00F4CBAE /* AppDelegate.swift */; };
 		3A62139525E26E0C00F4CBAE /* Stocks.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 3A62139325E26E0C00F4CBAE /* Stocks.xcdatamodeld */; };
@@ -59,6 +64,11 @@
 		3A052B2025E3F58500446486 /* StockCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StockCell.swift; sourceTree = "<group>"; };
 		3A052B2325E5153200446486 /* NetworkManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkManager.swift; sourceTree = "<group>"; };
 		3A0544D525F525AB00AE956F /* KeyPath+stringValue.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "KeyPath+stringValue.swift"; sourceTree = "<group>"; };
+		3A55A5FA2600F94300E7F53D /* DowJonesIndexResponseData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DowJonesIndexResponseData.swift; sourceTree = "<group>"; };
+		3A55A5FD2600F97900E7F53D /* LastPriceUpdatesResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LastPriceUpdatesResponse.swift; sourceTree = "<group>"; };
+		3A55A5FF2600F99B00E7F53D /* LastPriceUpdatesMessage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LastPriceUpdatesMessage.swift; sourceTree = "<group>"; };
+		3A55A6022600F9CE00E7F53D /* StockProfileResponseData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StockProfileResponseData.swift; sourceTree = "<group>"; };
+		3A55A6052600FA2100E7F53D /* StockQuoteResponseData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StockQuoteResponseData.swift; sourceTree = "<group>"; };
 		3A57741525E3E80000B67F4D /* StocksListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = StocksListViewController.swift; path = Stocks/UI/StocksListViewController.swift; sourceTree = SOURCE_ROOT; };
 		3A62138725E26E0C00F4CBAE /* Stocks.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Stocks.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		3A62138A25E26E0C00F4CBAE /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = AppDelegate.swift; path = ../AppDelegate.swift; sourceTree = "<group>"; };
@@ -155,6 +165,43 @@
 				3A8B758625FE21B900AA40AF /* NetworkError.swift */,
 			);
 			path = Network;
+			sourceTree = "<group>";
+		};
+		3A55A5F92600F93300E7F53D /* DowJones */ = {
+			isa = PBXGroup;
+			children = (
+				3AE9066B25E7DE8E00B346D3 /* DowJonesIndexRequest.swift */,
+				3A55A5FA2600F94300E7F53D /* DowJonesIndexResponseData.swift */,
+			);
+			path = DowJones;
+			sourceTree = "<group>";
+		};
+		3A55A5FC2600F96500E7F53D /* LastPriceUpdates */ = {
+			isa = PBXGroup;
+			children = (
+				3A55A5FF2600F99B00E7F53D /* LastPriceUpdatesMessage.swift */,
+				3A8B758225FDF0A000AA40AF /* LastPriceUpdatesRequest.swift */,
+				3A55A5FD2600F97900E7F53D /* LastPriceUpdatesResponse.swift */,
+			);
+			path = LastPriceUpdates;
+			sourceTree = "<group>";
+		};
+		3A55A6012600F9BF00E7F53D /* StockProfile */ = {
+			isa = PBXGroup;
+			children = (
+				3AD9749C25EFDBEF00ADA762 /* StockProfileRequest.swift */,
+				3A55A6022600F9CE00E7F53D /* StockProfileResponseData.swift */,
+			);
+			path = StockProfile;
+			sourceTree = "<group>";
+		};
+		3A55A6042600FA0E00E7F53D /* StockQuote */ = {
+			isa = PBXGroup;
+			children = (
+				3AD9749E25F1388600ADA762 /* StockQuoteRequest.swift */,
+				3A55A6052600FA2100E7F53D /* StockQuoteResponseData.swift */,
+			);
+			path = StockQuote;
 			sourceTree = "<group>";
 		};
 		3A57741225E3D1C800B67F4D /* AppRoot */ = {
@@ -306,10 +353,10 @@
 		3AE9066825E7DE5900B346D3 /* Concrete */ = {
 			isa = PBXGroup;
 			children = (
-				3AE9066B25E7DE8E00B346D3 /* DowJonesIndexRequest.swift */,
-				3A8B758225FDF0A000AA40AF /* LastPriceUpdatesRequest.swift */,
-				3AD9749C25EFDBEF00ADA762 /* StockProfileRequest.swift */,
-				3AD9749E25F1388600ADA762 /* StockQuoteRequest.swift */,
+				3A55A5F92600F93300E7F53D /* DowJones */,
+				3A55A5FC2600F96500E7F53D /* LastPriceUpdates */,
+				3A55A6012600F9BF00E7F53D /* StockProfile */,
+				3A55A6042600FA0E00E7F53D /* StockQuote */,
 			);
 			path = Concrete;
 			sourceTree = "<group>";
@@ -494,10 +541,13 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				3A55A6002600F99C00E7F53D /* LastPriceUpdatesMessage.swift in Sources */,
+				3A55A6032600F9CF00E7F53D /* StockProfileResponseData.swift in Sources */,
 				3AE9066625E7DE1900B346D3 /* BaseHttpsRequest.swift in Sources */,
 				3AD974A225F2796700ADA762 /* LoadMoreFooter.swift in Sources */,
 				3A57741625E3E80000B67F4D /* StocksListViewController.swift in Sources */,
 				3AD974A525F3584800ADA762 /* UIColor+HEX.swift in Sources */,
+				3A55A5FB2600F94300E7F53D /* DowJonesIndexResponseData.swift in Sources */,
 				3AD974C325F4D15700ADA762 /* LoadableImageView.swift in Sources */,
 				3A8B758725FE21B900AA40AF /* NetworkError.swift in Sources */,
 				3A8B758525FE154000AA40AF /* IWSSConnection.swift in Sources */,
@@ -509,6 +559,7 @@
 				3AD974C725F4E7FA00ADA762 /* UserData+CoreDataProperties.swift in Sources */,
 				3AE9066425E7DE0600B346D3 /* IRequest.swift in Sources */,
 				3AD974BC25F3E57B00ADA762 /* Index+CoreDataClass.swift in Sources */,
+				3A55A6062600FA2100E7F53D /* StockQuoteResponseData.swift in Sources */,
 				3AD9749F25F1388600ADA762 /* StockQuoteRequest.swift in Sources */,
 				3AD974B825F3C40100ADA762 /* Stock+CoreDataClass.swift in Sources */,
 				3AD974BD25F3E57B00ADA762 /* Index+CoreDataProperties.swift in Sources */,
@@ -521,6 +572,7 @@
 				3AD974A825F3889E00ADA762 /* CoreDataManager.swift in Sources */,
 				3AE9066225E7DDDF00B346D3 /* RequestMethod.swift in Sources */,
 				3A62139525E26E0C00F4CBAE /* Stocks.xcdatamodeld in Sources */,
+				3A55A5FE2600F97900E7F53D /* LastPriceUpdatesResponse.swift in Sources */,
 				3A8B758125FCB02A00AA40AF /* BaseWSSConnection.swift in Sources */,
 				3A0544D625F525AB00AE956F /* KeyPath+stringValue.swift in Sources */,
 				3AD9749D25EFDBEF00ADA762 /* StockProfileRequest.swift in Sources */,

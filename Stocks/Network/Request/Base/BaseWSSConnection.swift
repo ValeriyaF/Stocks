@@ -8,18 +8,33 @@
 
 import Foundation
 
-class BaseWSSConnection: IWSSConnection {
+class BaseWSSConnection {
+
+    // MARK: - Properties
 
     var queryItems: [URLQueryItem] {
         []
     }
+
+    // MARK: - Public methods
+
+    func subscribeToSymbolMessage(symbol: String) -> URLSessionWebSocketTask.Message? {
+        return nil
+    }
+
+}
+
+// MARK: - IWSSConnection
+
+extension BaseWSSConnection: IWSSConnection {
 
     var urlRequest: URLRequest? {
         var components = URLComponents()
         components.scheme = "wss"
         components.host = "ws.finnhub.io"
         var query = queryItems
-        query.append(URLQueryItem(name: "token", value: "c0ovj3v48v6rduk5po9g"))
+        // put api key here
+        query.append(URLQueryItem(name: "token", value: ""))
         components.queryItems = query
 
         guard let url = components.url else {
@@ -27,10 +42,6 @@ class BaseWSSConnection: IWSSConnection {
         }
 
         return URLRequest(url: url)
-    }
-
-    func subscribeToSymbolMessage(symbol: String) -> URLSessionWebSocketTask.Message? {
-        return nil
     }
 
 }

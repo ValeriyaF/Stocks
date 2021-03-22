@@ -11,6 +11,4 @@ import Foundation
 import CoreData
 
 @objc(Index)
-public class Index: NSManagedObject {
-
-}
+public class Index: NSManagedObject { }

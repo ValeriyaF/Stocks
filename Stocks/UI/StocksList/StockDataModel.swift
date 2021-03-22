@@ -24,7 +24,7 @@ struct StockDataModel {
 
         return currentPrice - dayOpenPrice
     }
-    
+
     var dayDeltaPersent: Double? {
         guard let currentPrice = currentPrice,
             let dayOpenPrice = dayOpenPrice else {

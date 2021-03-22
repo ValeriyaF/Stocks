@@ -8,37 +8,6 @@
 
 import Foundation
 
-enum MessageType: String, Encodable {
-
-    case subscribe
-
-}
-
-struct LastPriceUpdatesMessage: Encodable {
-
-    let type: MessageType
-    let symbol: String
-
-}
-
-struct LastPriceUpdatesResponse: Decodable {
-
-    let data: [SymbolLastPrice]
-
-}
-
-struct SymbolLastPrice: Decodable {
-
-    let price: Double
-    let symbol: String
-
-    enum CodingKeys: String, CodingKey {
-        case price = "p"
-        case symbol = "s"
-    }
-
-}
-
 final class LastPriceUpdatesConnection: BaseWSSConnection {
 
     private lazy var encoder = JSONEncoder()

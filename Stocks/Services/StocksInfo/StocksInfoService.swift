@@ -19,25 +19,17 @@ protocol IStocksInfoService {
 
     func updateFavoriteStatus(stockSymbol: String) -> [StockDataModel]
 
-    func getLifePriceUpdate(symbol: String, completion: @escaping (Result<[StockDataModel], Error>) -> Void)
+    func getLivePriceUpdate(symbol: String, completion: @escaping (Result<[StockDataModel], Error>) -> Void)
 
 }
 
-protocol LifePriceUpdateDelegate: class {
-
-    func didUpdatePrice(symbol: String)
-
-}
-
-final class StocksInfoService: IStocksInfoService {
+final class StocksInfoService {
 
     // MARK: - Dependencies
 
     private let networkManager: INetworkManager
 
     // MARK: - Properties
-
-    var lifePriceUpdateDelegates = [LifePriceUpdateDelegate]()
 
     private let workingQueue = DispatchQueue(label: "stocks.workingQueue", qos: .userInitiated, attributes: .concurrent)
     private var userFavorites = Set<String>()
@@ -51,40 +43,37 @@ final class StocksInfoService: IStocksInfoService {
         return completedStocks
     }
 
-    var stocksInfoFilled: Bool {
-        lastCompletedCount == stocks.count
-    }
-
     // MARK: - Initialisation
 
     init(networkManager: INetworkManager) {
         self.networkManager = networkManager
     }
 
+}
+
+// MARK: - IStocksInfoService
+
+extension StocksInfoService: IStocksInfoService {
+
+    var stocksInfoFilled: Bool {
+        lastCompletedCount == stocks.count
+    }
+
     func refreshStocks(limit: Int, completion: @escaping (Result<[StockDataModel], Error>) -> Void) {
         stocks = []
         lastCompletedCount = 0
 
-        if let userData = try? (CoreDataManager.shared.fetch(entity: UserData.self) as? [UserData])?.first {
-            userFavorites = Set(userData.favouriteStocks)
-        } else {
-            CoreDataManager.shared.save { context in
-                let entity = UserData(context: context)
-                entity.setValue([], forKey: (\UserData.favouriteStocks).stringValue)
-            }
-        }
+        refreshFavorites()
+
+        networkManager.closeConnection(request: lastPriceUpdatesConnection)
 
         let djRequest = DowJonesIndexRequest()
         networkManager.loadRequest(request: djRequest) { [weak self] (result: Result<DowJonesIndexResponseData?, Error>) in
-            guard let self = self else {
-                return
-            }
+            guard let self = self else { return }
 
             switch result {
             case .failure(let error):
-                // TODO: completion with error
-                fatalError()
-                break
+                completion(.failure(error))
             case .success(let response):
                 self.stocks = response?.constituents.map { StockDataModel(displaySymbol: $0,
                                                                           isFavourite: self.userFavorites.contains($0))} ?? []
@@ -108,24 +97,12 @@ final class StocksInfoService: IStocksInfoService {
             return stocks
         }
 
-        CoreDataManager.shared.save { context in
-            guard let userData = (try? context.fetch(UserData.fetchRequest()) as? [UserData])?.first else { return }
-
-            var favorites = Set(userData.favouriteStocks)
-            if favorites.contains(stockSymbol) {
-                favorites.remove(stockSymbol)
-            } else {
-                favorites.insert(stockSymbol)
-            }
-
-            userData.setValue(Array(favorites), forKey: (\UserData.favouriteStocks).stringValue)
-        }
-
+        storeFavoriteStatus(stockSymbol: stockSymbol)
         stocks[index].isFavourite = !stocks[index].isFavourite
         return completedStocks
     }
 
-    func getLifePriceUpdate(symbol: String, completion: @escaping (Result<[StockDataModel], Error>) -> Void) {
+    func getLivePriceUpdate(symbol: String, completion: @escaping (Result<[StockDataModel], Error>) -> Void) {
         guard let message = lastPriceUpdatesConnection.subscribeToSymbolMessage(symbol: symbol) else {
             return
         }
@@ -164,8 +141,7 @@ extension StocksInfoService {
             networkManager.loadRequest(request: stockProfile) { [weak self] (result: Result<StockProfileResponseData?, Error>) in
                 switch result {
                 case .failure(let error):
-                    // TODO: completion with error
-                    fatalError()
+                    completion(.failure(error))
                 case .success(let response):
                     self?.stocks[i].description = response?.name ?? ""
                     self?.stocks[i].logoImageString = response?.logoURL
@@ -180,8 +156,7 @@ extension StocksInfoService {
             networkManager.loadRequest(request: stockQuote) { [weak self] (result: Result<StockQuoteResponseData?, Error>) in
                 switch result {
                 case .failure(let error):
-                    // TODO: completion with error
-                    fatalError()
+                    completion(.failure(error))
                 case .success(let response):
                     self?.stocks[i].currentPrice = response?.currentPrice ?? 0
                     self?.stocks[i].dayOpenPrice = response?.dayOpenPrice ?? 0
@@ -195,7 +170,30 @@ extension StocksInfoService {
         }
     }
 
-    private func loadStockProfile(limit: Int) {
+    private func refreshFavorites() {
+        if let userData = try? (CoreDataManager.shared.fetch(entity: UserData.self) as? [UserData])?.first {
+            userFavorites = Set(userData.favouriteStocks)
+        } else {
+            CoreDataManager.shared.save { context in
+                let entity = UserData(context: context)
+                entity.setValue([], forKey: (\UserData.favouriteStocks).stringValue)
+            }
+        }
+    }
+
+    private func storeFavoriteStatus(stockSymbol: String) {
+        CoreDataManager.shared.save { context in
+            guard let userData = (try? context.fetch(UserData.fetchRequest()) as? [UserData])?.first else { return }
+
+            var favorites = Set(userData.favouriteStocks)
+            if favorites.contains(stockSymbol) {
+                favorites.remove(stockSymbol)
+            } else {
+                favorites.insert(stockSymbol)
+            }
+
+            userData.setValue(Array(favorites), forKey: (\UserData.favouriteStocks).stringValue)
+        }
     }
 
 }

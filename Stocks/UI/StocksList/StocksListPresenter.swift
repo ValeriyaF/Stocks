@@ -80,29 +80,28 @@ final class StocksListPresenter: IStocksListPresenter {
 extension StocksListPresenter {
 
     func viewDidLoad() {
-        refreshItems(limit: 10) // TODO: - add const
+        refreshItems(limit: Constants.itemsLimit)
     }
 
     func refreshStocks() {
-        refreshItems(limit: 10)
+        refreshItems(limit: Constants.itemsLimit)
     }
 
     func scrolledToTableBottom() {
         isLoading = true
         view?.showLoadingMoreIndicator()
 
-        stocksInfoService.loadMore(limit: 10) { [weak self] result in
+        stocksInfoService.loadMore(limit: Constants.itemsLimit) { [weak self] result in
             guard let self = self else { return }
 
             switch result {
             case .failure(let error):
-                // TODO: - add
-                fatalError("")
-                break
+                DispatchQueue.main.async {
+                    self.view?.showErrorAlert(error: error)
+                }
             case .success(let dm):
                 let diff = Array(dm.dropFirst(self._items.count))
-                // TODO: ждять пока выполнится
-                self.setupLifePriceUpdate(for: diff)
+                self.setupLivePriceUpdate(for: diff)
 
                 self._items = dm
                 DispatchQueue.main.async {
@@ -173,16 +172,17 @@ extension StocksListPresenter {
 
             switch result {
             case .failure(let error):
-                assertionFailure()
-                // TODO: - add
-                fatalError("")
+                DispatchQueue.main.async {
+                    self.view?.endRefreshing()
+                    self.view?.showErrorAlert(error: error)
+                }
             case .success(let dm):
                 let diff = Array(dm.dropFirst(self._items.count))
-                // TODO: ждять пока выполнится
-                self.setupLifePriceUpdate(for: diff)
+                self.setupLivePriceUpdate(for: diff)
                 self._items = dm
 
                 DispatchQueue.main.async {
+                    self.view?.endRefreshing()
                     self.view?.updateStocks()
                     self.isLoading = false
                 }
@@ -190,25 +190,38 @@ extension StocksListPresenter {
         }
     }
 
-    private func setupLifePriceUpdate(for dm: [StockDataModel]) {
+    private func setupLivePriceUpdate(for dm: [StockDataModel]) {
         dm.forEach { stock in
-            stocksInfoService.getLifePriceUpdate(symbol: stock.displaySymbol, completion: incomingWSSMessageCompletion)
+            stocksInfoService.getLivePriceUpdate(symbol: stock.displaySymbol, completion: incomingWSSMessageCompletion)
         }
     }
 
     private func incomingWSSMessage() -> ((Result<[StockDataModel], Error>) -> Void) {
-        return  { [weak self] result in
+        return { [weak self] result in
+            guard let self = self else { return }
+
             switch result {
-            case .success(let dm):
-                self?._items = dm
-                DispatchQueue.main.async {
-                    self?.view?.updateVisibleStocksPrice()
-                }
             case .failure(let error):
-                // TODO: make
-                break
+                DispatchQueue.main.async {
+                    self.view?.showErrorAlert(error: error)
+                }
+            case .success(let dm):
+                self._items = dm
+                if !self.isLoading {
+                    DispatchQueue.main.async {
+                        self.view?.updateVisibleStocksPrice()
+                    }
+                }
             }
         }
     }
+
+}
+
+// MARK: - Constants
+
+private enum Constants {
+
+    static let itemsLimit: Int = 10
 
 }

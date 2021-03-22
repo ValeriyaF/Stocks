@@ -21,8 +21,10 @@ final class LoadMoreFooter: UIView {
         return UIActivityIndicatorView(frame: frame)
     }()
 
+    // MARK: - Initialization
+
     init() {
-        super.init(frame: CGRect(x: 0, y: 0, width: 0, height: 40)) // TODO: add constants
+        super.init(frame: CGRect(x: 0, y: 0, width: 0, height: 40))
 
         addSubview(activityIndicator)
         activityIndicator.snp.makeConstraints { $0.center.equalToSuperview() }
